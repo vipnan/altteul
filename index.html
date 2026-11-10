@@ -1,0 +1,1078 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>알뜰맛뜰</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap">
+<style>
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+
+/* 레이아웃: 첫 화면은 검색창처럼 가운데 질문 하나와 금액 입력칸만. 추천을 누르면 결과 화면으로 바뀌고, 위에는 로고와 작은 입력칸, 아래는 편의점·배달음식·음식점 3열(폰은 탭). 조합마다 식판 3칸으로 영양 균형을 보여준다 */
+:root {
+  --bg: #F1F5F0;
+  --surface: #FFFFFF;
+  --tray: #DEE6DC;
+  --tray-well: #F7FAF6;
+  --ink: #1C2620;
+  --muted: #56645B;
+  --line: #D3DCD1;
+  --line-strong: #A3B1A6;
+  --accent: #2B6947;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #DAEADF;
+  --tag: #FFD84D;
+  --tag-ink: #3A2E00;
+  --carb: #D99A2B;
+  --carb-soft: #F5E2BA;
+  --protein: #CF5579;
+  --protein-soft: #F5D5DF;
+  --fat: #5D7BC3;
+  --veg: #3E9557;
+  --veg-soft: #D2EBD8;
+  --good: #26703F;
+  --good-soft: #DCEFE2;
+  --ok: #8A5F00;
+  --ok-soft: #FAEDC6;
+  --low: #B23D2A;
+  --low-soft: #F7DCD6;
+  --shadow: 0 1px 2px rgba(28, 38, 32, .06), 0 8px 22px rgba(28, 38, 32, .05);
+  --font-display: "Jua", "Gulim", "굴림", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-body: "Gowun Dodum", "Gulim", "굴림", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --radius: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121815; --surface: #1A221D; --tray: #27312B; --tray-well: #1E2621;
+    --ink: #E3EBE5; --muted: #9AA89F; --line: #2D3933; --line-strong: #4C5D52;
+    --accent: #7CC79A; --accent-ink: #0C1A12; --accent-soft: #1F3428;
+    --tag: #F0CC45; --tag-ink: #2A2100;
+    --carb: #E5AE4A; --carb-soft: #3E321A; --protein: #E77C9C; --protein-soft: #3E2330;
+    --fat: #8EA3E2; --veg: #6CC184; --veg-soft: #1D3826;
+    --good: #7FD19D; --good-soft: #1C3527; --ok: #E9C25A; --ok-soft: #3A3018; --low: #F08C78; --low-soft: #3F221C;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 22px rgba(0, 0, 0, .25);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121815; --surface: #1A221D; --tray: #27312B; --tray-well: #1E2621;
+  --ink: #E3EBE5; --muted: #9AA89F; --line: #2D3933; --line-strong: #4C5D52;
+  --accent: #7CC79A; --accent-ink: #0C1A12; --accent-soft: #1F3428;
+  --tag: #F0CC45; --tag-ink: #2A2100;
+  --carb: #E5AE4A; --carb-soft: #3E321A; --protein: #E77C9C; --protein-soft: #3E2330;
+  --fat: #8EA3E2; --veg: #6CC184; --veg-soft: #1D3826;
+  --good: #7FD19D; --good-soft: #1C3527; --ok: #E9C25A; --ok-soft: #3A3018; --low: #F08C78; --low-soft: #3F221C;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 22px rgba(0, 0, 0, .25);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { height: 100%; -webkit-text-size-adjust: 100%; }
+body {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+h1, h2, h3, p { margin: 0; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.view { flex: 1; width: 100%; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .28s; }
+
+.brand-mark { width: 34px; height: 27px; color: var(--accent); flex: none; }
+.brand-name { font-family: var(--font-display); font-size: 24px; line-height: 1.1; }
+
+/* 금액 입력칸 (첫 화면 · 결과 화면 공통) */
+.search-pill { display: flex; align-items: center; gap: 10px; width: 100%; padding: 6px 24px 6px 20px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface); box-shadow: var(--shadow); }
+.search-pill:hover { border-color: var(--line-strong); }
+.search-pill:focus-within { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
+.pill-icon { width: 26px; height: 26px; flex: none; color: var(--muted); }
+.budget-input { flex: 1; min-width: 0; width: 100%; border: 0; outline: none; background: transparent; color: var(--ink); font-family: var(--font-display); font-size: clamp(26px, 7vw, 34px); line-height: 1.25; padding: 8px 0; font-variant-numeric: tabular-nums; }
+.budget-input::placeholder { color: var(--muted); opacity: .55; }
+.search-pill .unit { font-family: var(--font-display); font-size: 22px; color: var(--muted); }
+.field-error { font-size: 14px; color: var(--low); }
+
+/* 첫 화면 */
+.home { display: grid; grid-template-rows: 1fr auto; }
+.home-center { align-self: center; justify-self: center; width: min(100%, 600px); display: grid; justify-items: center; gap: 14px; padding-block: 40px 28px; text-align: center; }
+.home-brand { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-display); font-size: 18px; color: var(--muted); }
+.home-brand .brand-mark { width: 30px; height: 24px; }
+.home-title { font-family: var(--font-display); font-weight: 400; font-size: clamp(40px, 10.5vw, 72px); line-height: 1.12; text-wrap: balance; margin-bottom: 10px; }
+.q { display: inline-block; margin-left: .03em; color: var(--accent); transform-origin: 50% 80%; animation: wiggle 1.3s ease-in-out .4s 2; }
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0); }
+  20% { transform: rotate(16deg); }
+  40% { transform: rotate(-11deg); }
+  60% { transform: rotate(7deg); }
+  80% { transform: rotate(-3deg); }
+}
+.home-form { width: 100%; display: grid; justify-items: center; gap: 8px; }
+.home-hint { min-height: 1.6em; font-size: 15px; color: var(--accent); }
+.chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 6px; }
+.chip { min-width: 84px; padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-size: 14px; white-space: nowrap; cursor: pointer; font-variant-numeric: tabular-nums; }
+.chip:hover { border-color: var(--line-strong); }
+.chip[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+@media (max-width: 420px) {
+  .chips { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); width: 100%; gap: 6px; }
+  .chip { min-width: 0; padding: 7px 2px; font-size: 13.5px; }
+}
+.cta { margin-top: 6px; padding: 13px 34px; border: 0; border-radius: 999px; background: var(--accent); color: var(--accent-ink); font-family: var(--font-display); font-size: 19px; cursor: pointer; }
+.cta:hover { filter: brightness(1.06); }
+.cta:active { transform: translateY(1px); }
+.home-foot { text-align: center; font-size: 12.5px; color: var(--muted); padding-block: 12px 18px; }
+
+/* 결과 화면 */
+.result { max-width: 1120px; margin: 0 auto; padding-block: 16px 56px; display: grid; gap: 26px; align-content: start; }
+.r-top { display: flex; align-items: center; gap: 12px 28px; flex-wrap: wrap; }
+.brand-btn { display: inline-flex; align-items: center; gap: 9px; padding: 4px 2px; border: 0; border-radius: 10px; background: none; color: var(--ink); cursor: pointer; }
+.mini-search { flex: 1 1 300px; max-width: 520px; display: grid; gap: 6px; }
+.search-pill.small { padding: 4px 4px 4px 20px; box-shadow: none; }
+.search-pill.small .budget-input { font-size: 22px; padding: 5px 0; }
+.search-pill.small .unit { font-size: 18px; }
+.mini-go { flex: none; padding: 9px 16px; border: 0; border-radius: 999px; background: var(--accent); color: var(--accent-ink); font-family: var(--font-display); font-size: 15px; cursor: pointer; }
+.mini-go:hover { filter: brightness(1.06); }
+
+.results { display: grid; gap: 14px; }
+.results-head { display: grid; gap: 6px; }
+.r-title { font-family: var(--font-display); font-weight: 400; font-size: clamp(24px, 4.8vw, 34px); line-height: 1.25; text-wrap: balance; }
+.r-title:focus { outline: none; }
+.r-title span { text-decoration: underline; text-decoration-color: var(--tag); text-decoration-thickness: .2em; text-underline-offset: .14em; text-decoration-skip-ink: none; }
+.results-head p { color: var(--muted); font-size: 14.5px; }
+.tabs-wrap { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: 6px; }
+.tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 13px; background: var(--tray); }
+.tab { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 9px 4px; border: 0; border-radius: 10px; background: transparent; color: var(--muted); font-family: var(--font-display); font-size: 16px; cursor: pointer; }
+.tab[aria-selected="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
+.tab .count { font-family: var(--font-body); font-size: 12px; min-width: 22px; padding: 1px 6px; border-radius: 999px; background: var(--tray-well); color: var(--muted); font-variant-numeric: tabular-nums; }
+@media (min-width: 880px) { .tabs-wrap { display: none; } }
+
+.cols { display: grid; gap: 22px; align-items: start; }
+@media (min-width: 880px) { .cols { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 879.98px) { .col:not(.is-active) { display: none; } .col-title { display: none; } }
+.col { display: grid; gap: 12px; min-width: 0; }
+.col-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; flex-wrap: wrap; padding-bottom: 6px; border-bottom: 2px solid var(--ink); }
+.col-title { font-family: var(--font-display); font-weight: 400; font-size: 23px; line-height: 1.2; }
+.col-meta { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.col-note { font-size: 13.5px; color: var(--muted); line-height: 1.5; }
+.cards { display: grid; gap: 14px; }
+
+/* 추천 카드 */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; display: grid; gap: 12px; min-width: 0; animation: rise .35s ease-out both; }
+@keyframes rise { from { transform: translateY(8px); } }
+.card > * { min-width: 0; }
+.card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.card-id { min-width: 0; }
+.store { font-family: var(--font-display); font-weight: 400; font-size: 18px; line-height: 1.25; }
+.where { font-size: 12.5px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+.score { flex: none; display: grid; justify-items: center; gap: 1px; min-width: 58px; padding: 5px 8px 6px; border-radius: 12px; background: var(--good-soft); color: var(--good); }
+.score b { font-family: var(--font-display); font-weight: 400; font-size: 24px; line-height: 1; font-variant-numeric: tabular-nums; }
+.score span { font-size: 11px; line-height: 1.2; }
+.score[data-band="ok"] { background: var(--ok-soft); color: var(--ok); }
+.score[data-band="low"] { background: var(--low-soft); color: var(--low); }
+.badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: -4px; }
+.badges:not(:has(.badge:not([hidden]))) { display: none; }
+.badge { font-size: 12px; line-height: 1.5; padding: 2px 9px; border-radius: 999px; background: var(--tray-well); color: var(--muted); border: 1px solid var(--line); }
+.badge.liked { background: var(--accent-soft); color: var(--accent); border-color: transparent; }
+.badge.warn { background: var(--low-soft); color: var(--low); border-color: transparent; }
+
+/* 식판: 칸이 채워질수록 골고루 */
+.tray { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 6px; padding: 6px; border-radius: 13px; background: var(--tray); }
+.slot { --slot: var(--carb); --slot-soft: var(--carb-soft); position: relative; isolation: isolate; overflow: hidden; display: grid; align-content: end; gap: 1px; min-height: 58px; padding: 7px 9px; border-radius: 9px; background: var(--tray-well); border: 1.5px solid transparent; }
+.slot.protein { --slot: var(--protein); --slot-soft: var(--protein-soft); }
+.slot.veg { --slot: var(--veg); --slot-soft: var(--veg-soft); }
+.slot::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; z-index: -1; height: 0; background: var(--slot-soft); animation: pour .65s cubic-bezier(.2, .7, .3, 1) both; }
+.slot[data-level="full"]::before { height: 100%; }
+.slot[data-level="half"]::before { height: 52%; border-top: 2px solid var(--slot); }
+.slot[data-level="none"] { background: transparent; border: 1.5px dashed var(--line-strong); }
+.slot[data-level="none"]::before { display: none; }
+.slot.protein::before { animation-delay: .07s; }
+.slot.veg::before { animation-delay: .14s; }
+@keyframes pour { from { transform: translateY(18%); } }
+.slot-name { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 5px; line-height: 1.3; }
+.slot-name::before { content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--slot); }
+.slot-state { font-family: var(--font-display); font-size: 16px; line-height: 1.2; }
+.slot[data-level="none"] .slot-state { color: var(--muted); }
+
+/* 영수증 */
+.receipt { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; font-size: 14.5px; }
+.receipt li { display: flex; align-items: baseline; gap: 6px; }
+.r-name { min-width: 0; }
+.r-dots { flex: 1 1 12px; min-width: 12px; border-bottom: 2px dotted var(--line-strong); transform: translateY(-5px); }
+.r-price { flex: none; font-variant-numeric: tabular-nums; }
+.r-fee { color: var(--muted); font-size: 13.5px; }
+.total { display: flex; align-items: center; justify-content: space-between; gap: 8px 12px; flex-wrap: wrap; padding-top: 10px; border-top: 1.5px dashed var(--line-strong); }
+.total-sum { font-size: 14px; color: var(--muted); display: flex; align-items: baseline; gap: 6px; }
+.total-sum b { font-family: var(--font-display); font-weight: 400; font-size: 22px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.left-tag { font-family: var(--font-display); font-size: 15px; line-height: 1.2; padding: 5px 11px 5px 20px; color: var(--tag-ink); background: radial-gradient(circle at 10px 50%, var(--surface) 0 2.6px, transparent 3.2px), var(--tag); clip-path: polygon(8px 0, 100% 0, 100% 100%, 8px 100%, 0 50%); border-radius: 0 6px 6px 0; font-variant-numeric: tabular-nums; }
+
+/* 탄단지 */
+.nutri { display: grid; gap: 8px; }
+.nutri-row { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.kcal { font-size: 13px; color: var(--muted); }
+.kcal b { font-family: var(--font-display); font-weight: 400; font-size: 21px; color: var(--ink); margin-right: 2px; font-variant-numeric: tabular-nums; }
+.na { font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.macro-bar { display: flex; gap: 2px; height: 9px; border-radius: 999px; overflow: hidden; background: var(--tray); }
+.macro-bar span { display: block; height: 100%; min-width: 2px; }
+.m-carb { background: var(--carb); }
+.m-protein { background: var(--protein); }
+.m-fat { background: var(--fat); }
+.macros { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 0; }
+.macros div { display: grid; gap: 1px; min-width: 0; }
+.macros dt { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--muted); }
+.macros dt::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 2px; background: var(--dot); }
+.macros dd { margin: 0; font-size: 15px; font-variant-numeric: tabular-nums; }
+.macros dd small { margin-left: 4px; font-size: 12px; color: var(--muted); }
+
+.reason { font-size: 14.5px; line-height: 1.55; padding: 9px 12px; border-radius: 10px; background: var(--tray-well); }
+.reason span { display: block; font-size: 12px; color: var(--accent); margin-bottom: 1px; }
+
+.facts summary { width: fit-content; cursor: pointer; font-size: 13.5px; color: var(--accent); padding: 2px 0; }
+.facts[open] summary { margin-bottom: 4px; }
+.table-scroll { overflow-x: auto; }
+.facts table { width: 100%; min-width: 400px; border-collapse: collapse; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.facts th, .facts td { padding: 6px 5px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.facts th:first-child, .facts td:first-child { text-align: left; white-space: normal; }
+.facts thead th { font-weight: 400; color: var(--muted); }
+.facts td small { display: block; font-size: 11px; color: var(--muted); }
+.facts tfoot td { border-bottom: 0; font-family: var(--font-display); font-size: 13.5px; }
+.src { margin-top: 6px; font-size: 12px; color: var(--muted); }
+
+.card-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; padding-top: 10px; border-top: 1px solid var(--line); }
+.rate-label { font-size: 13px; color: var(--muted); }
+.rate { display: flex; gap: 6px; }
+.rate button { display: inline-flex; align-items: center; gap: 5px; padding: 6px 11px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--muted); font-size: 13px; cursor: pointer; }
+.rate button:hover { border-color: var(--line-strong); color: var(--ink); }
+.rate svg { width: 15px; height: 15px; flex: none; }
+.rate svg.flip { transform: rotate(180deg); }
+.rate .up[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+.rate .down[aria-pressed="true"] { background: var(--low-soft); border-color: var(--low); color: var(--low); }
+
+.more { padding: 11px; border-radius: 12px; border: 1.5px dashed var(--line-strong); background: transparent; color: var(--ink); font-size: 14.5px; cursor: pointer; }
+.more:hover { background: var(--surface); }
+
+.empty { display: grid; gap: 8px; padding: 18px; border-radius: var(--radius); border: 1.5px dashed var(--line-strong); }
+.empty .tray { max-width: 220px; }
+.empty .slot { min-height: 34px; }
+.empty b { font-family: var(--font-display); font-weight: 400; font-size: 18px; line-height: 1.35; }
+.empty p { color: var(--muted); font-size: 14.5px; }
+
+/* 결과 화면 아래 */
+.foot { display: grid; gap: 14px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+.how summary { width: fit-content; cursor: pointer; font-family: var(--font-display); font-size: 18px; color: var(--ink); }
+.how p { margin-top: 10px; max-width: 40em; }
+.criteria { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; max-width: 46em; }
+.criteria li { display: grid; grid-template-columns: 8.5em minmax(0, 1fr); gap: 12px; padding-bottom: 8px; border-bottom: 1px dashed var(--line); }
+.criteria b { font-weight: 400; font-family: var(--font-display); color: var(--ink); }
+@media (max-width: 420px) { .criteria li { grid-template-columns: 1fr; gap: 2px; } }
+.note { max-width: 46em; }
+.foot-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.linkish { border: 0; background: none; padding: 0; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font-size: 13.5px; }
+
+.toast { position: fixed; z-index: 20; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); width: max-content; max-width: calc(100% - 32px); padding: 11px 16px; border-radius: 12px; background: var(--ink); color: var(--bg); font-size: 14px; line-height: 1.45; box-shadow: var(--shadow); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+</style>
+</head>
+<body>
+<!-- 첫 화면 -->
+<main class="view home" id="home">
+  <div class="home-center">
+    <p class="home-brand">
+      <svg class="brand-mark" viewBox="0 0 38 30" aria-hidden="true">
+        <rect x="1.5" y="1.5" width="35" height="27" rx="8" fill="none" stroke="currentColor" stroke-width="2.6"/>
+        <rect x="6.5" y="6.5" width="12" height="17" rx="3.5" fill="currentColor"/>
+        <rect x="21.5" y="6.5" width="10" height="7.5" rx="2.6" fill="currentColor" fill-opacity=".55"/>
+        <rect x="21.5" y="16" width="10" height="7.5" rx="2.6" fill="currentColor" fill-opacity=".3"/>
+      </svg>
+      알뜰맛뜰
+    </p>
+    <h1 class="home-title" id="homeTitle">오늘의 식비는<span class="q">?</span></h1>
+    <form class="home-form" id="homeForm" novalidate>
+      <label class="sr-only" for="homeBudget">오늘의 식비 (원)</label>
+      <div class="search-pill">
+        <svg class="pill-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <ellipse cx="8" cy="6.6" rx="3" ry="4" fill="none" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M8 10.6V21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M15.2 3v18M18.8 3l-1 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <input id="homeBudget" class="budget-input" type="text" inputmode="numeric" autocomplete="off" enterkeyhint="go" placeholder="예) 8,000" aria-describedby="homeHint homeError">
+        <span class="unit" aria-hidden="true">원</span>
+      </div>
+      <div class="chips" role="group" aria-label="자주 쓰는 금액">
+        <button type="button" class="chip" data-amount="5000" aria-pressed="false">5,000원</button>
+        <button type="button" class="chip" data-amount="7000" aria-pressed="false">7,000원</button>
+        <button type="button" class="chip" data-amount="10000" aria-pressed="false">10,000원</button>
+        <button type="button" class="chip" data-amount="15000" aria-pressed="false">15,000원</button>
+      </div>
+      <p class="home-hint" id="homeHint" aria-live="polite"></p>
+      <p class="field-error" id="homeError" hidden></p>
+      <button type="submit" class="cta">한 끼 추천받기</button>
+    </form>
+  </div>
+  <p class="home-foot">예시 데이터로 시연 중 · 팀 올펫로그</p>
+</main>
+
+<!-- 결과 화면 -->
+<main class="view result" id="result" hidden>
+  <header class="r-top">
+    <button type="button" class="brand-btn" id="goHome" aria-label="알뜰맛뜰 첫 화면으로">
+      <svg class="brand-mark" viewBox="0 0 38 30" aria-hidden="true">
+        <rect x="1.5" y="1.5" width="35" height="27" rx="8" fill="none" stroke="currentColor" stroke-width="2.6"/>
+        <rect x="6.5" y="6.5" width="12" height="17" rx="3.5" fill="currentColor"/>
+        <rect x="21.5" y="6.5" width="10" height="7.5" rx="2.6" fill="currentColor" fill-opacity=".55"/>
+        <rect x="21.5" y="16" width="10" height="7.5" rx="2.6" fill="currentColor" fill-opacity=".3"/>
+      </svg>
+      <span class="brand-name">알뜰맛뜰</span>
+    </button>
+    <form class="mini-search" id="resultForm" novalidate>
+      <label class="sr-only" for="resultBudget">오늘의 식비 (원)</label>
+      <div class="search-pill small">
+        <input id="resultBudget" class="budget-input" type="text" inputmode="numeric" autocomplete="off" enterkeyhint="go" aria-describedby="resultError">
+        <span class="unit" aria-hidden="true">원</span>
+        <button type="submit" class="mini-go">다시 추천</button>
+      </div>
+      <p class="field-error" id="resultError" hidden></p>
+    </form>
+  </header>
+
+  <section class="results" aria-labelledby="resultsTitle">
+    <div class="results-head">
+      <h1 class="r-title" id="resultsTitle" tabindex="-1">오늘의 식비 <span id="rBudget">0원</span>, 이렇게 먹어요</h1>
+      <p id="rMood"></p>
+    </div>
+    <div class="tabs-wrap">
+      <div class="tabs" role="tablist" aria-label="추천 종류">
+        <button type="button" role="tab" class="tab" id="tab-cvs" data-cat="cvs" aria-controls="col-cvs" aria-selected="true">편의점<span class="count">0</span></button>
+        <button type="button" role="tab" class="tab" id="tab-delivery" data-cat="delivery" aria-controls="col-delivery" aria-selected="false" tabindex="-1">배달음식<span class="count">0</span></button>
+        <button type="button" role="tab" class="tab" id="tab-restaurant" data-cat="restaurant" aria-controls="col-restaurant" aria-selected="false" tabindex="-1">음식점<span class="count">0</span></button>
+      </div>
+    </div>
+    <p class="sr-only" id="live" aria-live="polite"></p>
+    <div class="cols">
+      <section class="col is-active" id="col-cvs" data-cat="cvs" role="tabpanel" aria-labelledby="tab-cvs">
+        <header class="col-head"><h2 class="col-title">편의점</h2><span class="col-meta"></span></header>
+        <p class="col-note">가까운 편의점에서 바로 사 먹을 수 있어요.</p>
+        <div class="cards"></div>
+        <button type="button" class="more" data-more="cvs" aria-controls="col-cvs" hidden></button>
+      </section>
+      <section class="col" id="col-delivery" data-cat="delivery" role="tabpanel" aria-labelledby="tab-delivery">
+        <header class="col-head"><h2 class="col-title">배달음식</h2><span class="col-meta"></span></header>
+        <p class="col-note">배달팁까지 더한 가격이에요.</p>
+        <div class="cards"></div>
+        <button type="button" class="more" data-more="delivery" aria-controls="col-delivery" hidden></button>
+      </section>
+      <section class="col" id="col-restaurant" data-cat="restaurant" role="tabpanel" aria-labelledby="tab-restaurant">
+        <header class="col-head"><h2 class="col-title">음식점</h2><span class="col-meta"></span></header>
+        <p class="col-note">가서 먹는 메뉴예요. 기본 반찬도 계산했어요.</p>
+        <div class="cards"></div>
+        <button type="button" class="more" data-more="restaurant" aria-controls="col-restaurant" hidden></button>
+      </section>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <details class="how">
+      <summary>점수는 어떻게 매기나요?</summary>
+      <p>예산 안에서 만들 수 있는 조합마다 100점 만점으로 영양 균형 점수를 계산하고, 높은 순서로 보여줘요.</p>
+      <ul class="criteria">
+        <li><b>칼로리 25점</b><span>한 끼 550~800kcal이면 만점, 멀어질수록 줄어요</span></li>
+        <li><b>단백질 25점</b><span>30g 이상이면 만점, 적을수록 줄어요</span></li>
+        <li><b>채소·과일 20점</b><span>넉넉하면 20점, 한 접시 정도면 15점, 조금이면 7점</span></li>
+        <li><b>탄단지 비율 20점</b><span>칼로리 기준 탄수화물 45~65%, 단백질 15~30%, 지방 15~35%</span></li>
+        <li><b>나트륨 10점</b><span>1,000mg 이하면 만점, 2,300mg 이상이면 0점</span></li>
+        <li><b>내 평가</b><span>맛있었어요는 +15점, 별로였어요는 −30점으로 순서에 반영해요. 평가는 이 기기에만 저장돼요.</span></li>
+      </ul>
+    </details>
+    <p class="note">가게 이름과 가격은 시연용 예시예요. 영양 정보는 식약처 식품영양성분DB(음식, 2026년 9월 29일 기준) 값을 먹는 양에 맞게 환산했고, 도시락·백반은 재료별 값을 더했어요. 음식 DB에 없는 편의점 제품 일부(우유, 바나나 등)는 예시값이에요.</p>
+    <div class="foot-row">
+      <span>알뜰맛뜰 · 팀 올펫로그</span>
+      <button type="button" class="linkish" id="resetRatings" hidden>내 평가 모두 지우기</button>
+    </div>
+  </footer>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script id="engine">
+/* =========================================================
+   알뜰맛뜰 추천 엔진 (화면과 분리된 계산 부분)
+   - STORES: 가게 정보 / MENUS: 메뉴 · 가격 · 영양값
+   - 지금 데이터는 모두 시연용 예시입니다. 실제로 조사한 데이터로 이 두 목록만 바꾸면 돼요.
+   ========================================================= */
+
+/* 영양 정보 출처: 식약처 식품영양성분DB (전국통합식품영양성분정보(음식)표준데이터, 데이터 기준일 2026-09-29)
+   - DB 값은 '영양성분함량 기준량'(100g 또는 100ml) 기준이라, 먹는 양에 맞게 환산해서 넣었어요.
+   - DB 열 → nutrition 키
+       에너지(kcal) → calories   탄수화물(g) → carbohydrate   단백질(g) → protein
+       지방(g) → fat             나트륨(mg) → sodium
+   - src: 'mfds' DB 값 그대로 환산 · 'mix' 재료별 DB 값을 더함(도시락·백반 등) · 'sample' 음식 DB에 없어 예시값
+   - db: 매칭한 DB 식품명 (재료 조합은 재료와 양) */
+const NUTRITION_SOURCE = 'mfds';
+
+const N = (calories, carbohydrate, protein, fat, sodium) => ({ calories, carbohydrate, protein, fat, sodium });
+
+/* type: cvs(편의점) · delivery(배달음식) · restaurant(음식점)
+   배달 가게는 minOrder(최소주문금액)와 fee(배달팁)가 있어요. */
+const STORES = [
+  { id: 'cvs-saessak', type: 'cvs', name: '새싹편의점 정문점', where: '정문 앞 · 도보 3분' },
+  { id: 'cvs-haru', type: 'cvs', name: '하루마트 기숙사점', where: '기숙사 1층 · 도보 1분' },
+
+  { id: 'dlv-dosirak', type: 'delivery', name: '한끼도시락', where: '배달 25~35분', minOrder: 7000, fee: 1900 },
+  { id: 'dlv-honbap', type: 'delivery', name: '혼밥덮밥', where: '배달 30~40분', minOrder: 0, fee: 2900 },
+  { id: 'dlv-greenbowl', type: 'delivery', name: '그린볼샐러드', where: '배달 30~45분', minOrder: 10000, fee: 2500 },
+  { id: 'dlv-jjajang', type: 'delivery', name: '용반점', where: '배달 20~30분', minOrder: 12000, fee: 2000 },
+  { id: 'dlv-bunsik', type: 'delivery', name: '분식마을', where: '배달 25~40분', minOrder: 9000, fee: 2000 },
+
+  { id: 'rst-jeongmun', type: 'restaurant', name: '정문분식', where: '정문 앞 · 도보 4분' },
+  { id: 'rst-baekban', type: 'restaurant', name: '든든백반', where: '후문 · 도보 7분 · 기본 반찬 제공' },
+  { id: 'rst-deopbap', type: 'restaurant', name: '캠퍼스덮밥', where: '정문 · 도보 5분' },
+  { id: 'rst-green', type: 'restaurant', name: '초록한그릇', where: '후문 · 도보 9분' },
+  { id: 'rst-bibim', type: 'restaurant', name: '비빔한끼', where: '정문 · 도보 6분' },
+  { id: 'rst-gukbap', type: 'restaurant', name: '한그릇국밥', where: '시내 방향 · 도보 10분' },
+];
+
+/* role
+   편의점: meal(도시락·컵밥) · staple(삼각김밥·김밥·샌드위치·컵라면) · protein · veg(채소·과일) · drink
+   음식점·배달: main(주메뉴) · side(추가 메뉴)
+   veg: 채소·과일 양 (0 없음, 1 조금, 2 한 접시, 3 넉넉) — DB에 없는 값이라 직접 정한 값 */
+const MENUS = [
+  // 새싹편의점 정문점
+  { store: "cvs-saessak", id: "s01", name: "참치마요 삼각김밥", serving: "1개 112g", price: 1700, role: "staple", veg: 0, src: "mfds", db: "삼각김밥_참치마요네즈 (외식(분석))", nutrition: N(193, 35.8, 4.4, 3.6, 316) },
+  { store: "cvs-saessak", id: "s02", name: "고추장불고기 삼각김밥", serving: "1개 115g", price: 1700, role: "staple", veg: 0, src: "mfds", db: "삼각김밥_고추장불고기 (외식(분석))", nutrition: N(190, 39.2, 4.2, 1.8, 394) },
+  { store: "cvs-saessak", id: "s03", name: "소고기 주먹밥", serving: "1개 140g", price: 2300, role: "staple", veg: 0, src: "mfds", db: "주먹밥_소고기 (가정식(분석))", nutrition: N(249, 48.6, 6.7, 3.1, 500) },
+  { store: "cvs-saessak", id: "s04", name: "제육 도시락", serving: "1개 390g", price: 5900, role: "meal", veg: 1, src: "mix", db: "쌀밥 210g + 돼지고기볶음(제육볶음) 120g + 배추김치 30g + 콩나물무침 30g", nutrition: N(615, 87, 23.4, 19.2, 883) },
+  { store: "cvs-saessak", id: "s05", name: "참치김밥", serving: "1줄 230g", price: 3300, role: "staple", veg: 1, src: "mfds", db: "김밥_참치 (외식(분석))", nutrition: N(391, 52.3, 14.8, 13.5, 812) },
+  { store: "cvs-saessak", id: "s06", name: "햄치즈 샌드위치", serving: "1개 150g", price: 3300, role: "staple", veg: 0, src: "mfds", db: "샌드위치_햄_치즈 (외식(분석))", nutrition: N(426, 40.4, 12.9, 23.6, 732) },
+  { store: "cvs-saessak", id: "s07", name: "컵라면 (소)", serving: "1개 · 조리 후 약 350g", price: 1300, role: "staple", veg: 0, src: "mfds", db: "라면_용기면 (외식(분석))", nutrition: N(360, 54.8, 6.9, 12.7, 1407) },
+  { store: "cvs-saessak", id: "s08", name: "훈제 닭가슴살", serving: "1팩 100g", price: 2800, role: "protein", veg: 0, src: "sample", db: "", nutrition: N(115, 2, 23, 1.5, 480) },
+  { store: "cvs-saessak", id: "s09", name: "구운란 2구", serving: "2개 100g", price: 2000, role: "protein", veg: 0, src: "mfds", db: "달걀_삶은것 (외식(분석))", nutrition: N(150, 0.6, 12.8, 10.7, 127) },
+  { store: "cvs-saessak", id: "s10", name: "그릭요거트", serving: "1개 100g", price: 2600, role: "protein", veg: 0, src: "sample", db: "", nutrition: N(110, 7, 10, 4.5, 50) },
+  { store: "cvs-saessak", id: "s11", name: "양배추 샐러드", serving: "1컵 150g (드레싱 포함)", price: 3500, role: "veg", veg: 2, src: "mfds", db: "샐러드_양배추 (가정식(분석))", nutrition: N(225, 12.7, 4, 17.6, 146) },
+  { store: "cvs-saessak", id: "s12", name: "방울토마토 컵", serving: "1컵 150g", price: 2500, role: "veg", veg: 2, src: "sample", db: "", nutrition: N(30, 6, 1.3, 0.3, 10) },
+  { store: "cvs-saessak", id: "s13", name: "바나나", serving: "1개", price: 1500, role: "veg", veg: 1, src: "sample", db: "", nutrition: N(105, 27, 1.3, 0.4, 1) },
+  { store: "cvs-saessak", id: "s14", name: "흰 우유", serving: "200ml", price: 1300, role: "drink", veg: 0, src: "sample", db: "", nutrition: N(130, 10, 6, 7.5, 100) },
+
+  // 하루마트 기숙사점
+  { store: "cvs-haru", id: "h01", name: "참치마요 삼각김밥", serving: "1개 112g", price: 1800, role: "staple", veg: 0, src: "mfds", db: "삼각김밥_참치마요네즈 (외식(분석))", nutrition: N(193, 35.8, 4.4, 3.6, 316) },
+  { store: "cvs-haru", id: "h02", name: "닭가슴살 닭갈비 도시락", serving: "1개 390g", price: 5500, role: "meal", veg: 1, src: "mix", db: "쌀밥 200g + 닭볶음(닭갈비)_닭가슴살_피망 130g + 배추김치 30g + 콩나물무침 30g", nutrition: N(523, 79.4, 29.8, 9.5, 918) },
+  { store: "cvs-haru", id: "h03", name: "김치볶음밥 컵밥", serving: "1개 280g", price: 4300, role: "meal", veg: 1, src: "mfds", db: "볶음밥_김치 (외식(분석))", nutrition: N(468, 65, 11.7, 18, 896) },
+  { store: "cvs-haru", id: "h04", name: "참치김밥", serving: "1줄 230g", price: 3200, role: "staple", veg: 1, src: "mfds", db: "김밥_참치 (외식(분석))", nutrition: N(391, 52.3, 14.8, 13.5, 812) },
+  { store: "cvs-haru", id: "h05", name: "컵라면 (소)", serving: "1개 · 조리 후 약 350g", price: 1300, role: "staple", veg: 0, src: "mfds", db: "라면_용기면 (외식(분석))", nutrition: N(360, 54.8, 6.9, 12.7, 1407) },
+  { store: "cvs-haru", id: "h06", name: "훈제 닭가슴살", serving: "1팩 100g", price: 2700, role: "protein", veg: 0, src: "sample", db: "", nutrition: N(115, 2, 23, 1.5, 480) },
+  { store: "cvs-haru", id: "h07", name: "구운란 2구", serving: "2개 100g", price: 2000, role: "protein", veg: 0, src: "mfds", db: "달걀_삶은것 (외식(분석))", nutrition: N(150, 0.6, 12.8, 10.7, 127) },
+  { store: "cvs-haru", id: "h08", name: "한끼 두부", serving: "1팩 100g", price: 2000, role: "protein", veg: 0, src: "sample", db: "", nutrition: N(90, 3, 9, 5, 10) },
+  { store: "cvs-haru", id: "h09", name: "후랑크 소시지", serving: "1개 70g", price: 2200, role: "protein", veg: 0, src: "sample", db: "", nutrition: N(210, 6, 8, 17, 720) },
+  { store: "cvs-haru", id: "h10", name: "닭가슴살 샐러드", serving: "1팩 205g (드레싱 포함)", price: 4900, role: "veg", veg: 2, src: "mfds", db: "샐러드_닭가슴살 (외식(분석))", nutrition: N(246, 4.7, 19.7, 16.5, 640) },
+  { store: "cvs-haru", id: "h11", name: "바나나", serving: "1개", price: 1400, role: "veg", veg: 1, src: "sample", db: "", nutrition: N(105, 27, 1.3, 0.4, 1) },
+  { store: "cvs-haru", id: "h12", name: "검은콩 두유", serving: "190ml", price: 1400, role: "drink", veg: 0, src: "sample", db: "", nutrition: N(125, 13, 6.5, 5, 140) },
+  { store: "cvs-haru", id: "h13", name: "흰 우유", serving: "200ml", price: 1300, role: "drink", veg: 0, src: "sample", db: "", nutrition: N(130, 10, 6, 7.5, 100) },
+
+  // 배달: 한끼도시락
+  { store: "dlv-dosirak", id: "x01", name: "닭가슴살 현미 도시락", serving: "1개 460g", price: 7900, role: "main", veg: 2, src: "mix", db: "현미밥 200g + 닭볶음(닭갈비)_닭가슴살_피망 150g + 콩나물무침 40g + 시금치나물 40g + 배추김치 30g", nutrition: N(594, 84.4, 34.4, 13.1, 1114) },
+  { store: "dlv-dosirak", id: "x02", name: "제육 도시락", serving: "1개 440g", price: 7500, role: "main", veg: 1, src: "mix", db: "쌀밥 230g + 돼지고기볶음(제육볶음) 150g + 배추김치 30g + 콩나물무침 30g", nutrition: N(706, 95.9, 27.7, 23.5, 1033) },
+  { store: "dlv-dosirak", id: "x03", name: "계란말이", serving: "4조각 120g", price: 2000, role: "side", veg: 0, src: "mfds", db: "달걀말이_채소 (외식(분석))", nutrition: N(220, 5.5, 13.4, 16, 356) },
+
+  // 배달: 혼밥덮밥
+  { store: "dlv-honbap", id: "y01", name: "불고기덮밥", serving: "1그릇 400g", price: 7900, role: "main", veg: 1, src: "mfds", db: "덮밥_불고기 (가정식(분석))", nutrition: N(728, 107.8, 26.4, 21.2, 1012) },
+  { store: "dlv-honbap", id: "y02", name: "회덮밥", serving: "1그릇 500g", price: 11900, role: "main", veg: 2, src: "mfds", db: "회덮밥 (외식(분석))", nutrition: N(685, 103.3, 30.2, 16.6, 745) },
+  { store: "dlv-honbap", id: "y03", name: "미소된장국", serving: "1컵 150g", price: 1000, role: "side", veg: 0, src: "mfds", db: "미소된장국 (외식(분석))", nutrition: N(38, 2.8, 2.8, 1.8, 518) },
+
+  // 배달: 그린볼샐러드
+  { store: "dlv-greenbowl", id: "z01", name: "닭가슴살 샐러드", serving: "1그릇 300g", price: 8500, role: "main", veg: 3, src: "mfds", db: "샐러드_닭가슴살 (외식(분석))", nutrition: N(360, 6.9, 28.9, 24.1, 936) },
+  { store: "dlv-greenbowl", id: "z02", name: "연어 포케", serving: "1그릇 350g", price: 11900, role: "main", veg: 2, src: "mix", db: "현미밥 150g + 연어구이 80g + 샐러드_양상추 120g", nutrition: N(596, 62.6, 30.4, 25, 319) },
+  { store: "dlv-greenbowl", id: "z03", name: "삶은 달걀 2개", serving: "2개 100g", price: 1800, role: "side", veg: 0, src: "mfds", db: "달걀_삶은것 (외식(분석))", nutrition: N(150, 0.6, 12.8, 10.7, 127) },
+  { store: "dlv-greenbowl", id: "z04", name: "현미밥", serving: "1공기 150g", price: 1500, role: "side", veg: 0, src: "mfds", db: "현미밥 (가정식(분석))", nutrition: N(258, 58.4, 4.7, 0.7, 3) },
+
+  // 배달: 용반점
+  { store: "dlv-jjajang", id: "w01", name: "짜장면", serving: "1그릇 600ml", price: 7000, role: "main", veg: 1, src: "mfds", db: "짜장면 (외식(재료량 산출))", nutrition: N(918, 174.8, 31.8, 15.4, 2466) },
+  { store: "dlv-jjajang", id: "w02", name: "삼선짬뽕", serving: "1그릇 900g", price: 8500, role: "main", veg: 1, src: "mfds", db: "짬뽕_삼선 (외식(분석))", nutrition: N(666, 101.7, 39.6, 10.8, 2691) },
+  { store: "dlv-jjajang", id: "w03", name: "군만두", serving: "1접시 220g", price: 5000, role: "side", veg: 0, src: "mfds", db: "만두_군만두 (가정식(분석))", nutrition: N(515, 56.3, 15.5, 25.3, 847) },
+
+  // 배달: 분식마을
+  { store: "dlv-bunsik", id: "u01", name: "참치김밥", serving: "1줄 250g", price: 4000, role: "main", veg: 1, src: "mfds", db: "김밥_참치 (외식(분석))", nutrition: N(425, 56.8, 16.1, 14.7, 882) },
+  { store: "dlv-bunsik", id: "u02", name: "라면", serving: "1그릇 550g", price: 4500, role: "main", veg: 0, src: "mfds", db: "라면_라면만 (외식(분석))", nutrition: N(462, 79.4, 9.7, 12, 1683) },
+  { store: "dlv-bunsik", id: "u03", name: "쫄면", serving: "1그릇 550g", price: 6500, role: "main", veg: 1, src: "mfds", db: "쫄면 (가정식(분석))", nutrition: N(710, 127.9, 17.7, 13.9, 1375) },
+  { store: "dlv-bunsik", id: "u04", name: "떡볶이", serving: "1인분 300g", price: 5000, role: "main", veg: 0, src: "mfds", db: "떡볶이 (가정식(분석))", nutrition: N(432, 77.9, 10.5, 8.9, 1173) },
+
+  // 음식점: 정문분식
+  { store: "rst-jeongmun", id: "j01", name: "참치김밥", serving: "1줄 250g", price: 4000, role: "main", veg: 1, src: "mfds", db: "김밥_참치 (외식(분석))", nutrition: N(425, 56.8, 16.1, 14.7, 882) },
+  { store: "rst-jeongmun", id: "j02", name: "라면", serving: "1그릇 550g", price: 4500, role: "main", veg: 0, src: "mfds", db: "라면_라면만 (외식(분석))", nutrition: N(462, 79.4, 9.7, 12, 1683) },
+  { store: "rst-jeongmun", id: "j03", name: "떡볶이", serving: "1인분 300g", price: 4500, role: "main", veg: 0, src: "mfds", db: "떡볶이 (가정식(분석))", nutrition: N(432, 77.9, 10.5, 8.9, 1173) },
+  { store: "rst-jeongmun", id: "j04", name: "제육덮밥", serving: "1그릇 470g", price: 7500, role: "main", veg: 1, src: "mfds", db: "덮밥_돼지고기(제육) (가정식(분석))", nutrition: N(949, 79.2, 44.3, 50.6, 818) },
+  { store: "rst-jeongmun", id: "j05", name: "삶은 달걀 추가", serving: "1개 50g", price: 1000, role: "side", veg: 0, src: "mfds", db: "달걀_삶은것 (외식(분석))", nutrition: N(75, 0.3, 6.4, 5.3, 64) },
+
+  // 음식점: 든든백반
+  { store: "rst-baekban", id: "b01", name: "제육볶음 백반", serving: "밥 · 국 · 반찬 3가지", price: 8500, role: "main", veg: 3, src: "mix", db: "쌀밥 210g + 돼지고기볶음(제육볶음) 150g + 된장국_배추 250g + 배추김치 40g + 콩나물무침 50g + 시금치나물 50g", nutrition: N(775, 97.8, 33.5, 27.6, 1791) },
+  { store: "rst-baekban", id: "b02", name: "된장찌개 백반", serving: "밥 · 찌개 · 반찬 3가지", price: 8000, role: "main", veg: 3, src: "mix", db: "쌀밥 210g + 된장찌개_두부 300g + 배추김치 40g + 콩나물무침 50g + 시금치나물 50g", nutrition: N(556, 91.9, 21.4, 11.2, 1916) },
+  { store: "rst-baekban", id: "b03", name: "고등어구이 백반", serving: "밥 · 국 · 반찬 2가지", price: 9500, role: "main", veg: 3, src: "mix", db: "쌀밥 210g + 고등어구이_석쇠 100g + 된장국_배추 250g + 배추김치 40g + 콩나물무침 50g", nutrition: N(788, 92.8, 36.8, 29.8, 1097) },
+
+  // 음식점: 캠퍼스덮밥
+  { store: "rst-deopbap", id: "d01", name: "닭고기덮밥", serving: "1그릇 410g", price: 6500, role: "main", veg: 1, src: "mfds", db: "덮밥_닭고기 (가정식(분석))", nutrition: N(512, 60.8, 46.7, 8.9, 627) },
+  { store: "rst-deopbap", id: "d02", name: "불고기덮밥", serving: "1그릇 400g", price: 7500, role: "main", veg: 1, src: "mfds", db: "덮밥_불고기 (가정식(분석))", nutrition: N(728, 107.8, 26.4, 21.2, 1012) },
+  { store: "rst-deopbap", id: "d03", name: "계란후라이 추가", serving: "1개 60g", price: 1000, role: "side", veg: 0, src: "mfds", db: "달걀부침(달걀후라이) (가정식(분석))", nutrition: N(125, 3.1, 9.4, 8.3, 97) },
+  { store: "rst-deopbap", id: "d04", name: "미니 샐러드", serving: "1접시 80g", price: 2000, role: "side", veg: 1, src: "mfds", db: "샐러드_양상추 (가정식(분석))", nutrition: N(101, 2.7, 3.9, 8.2, 126) },
+
+  // 음식점: 초록한그릇
+  { store: "rst-green", id: "g01", name: "닭가슴살 샐러드볼", serving: "1그릇 300g", price: 8900, role: "main", veg: 3, src: "mfds", db: "샐러드_닭가슴살 (외식(분석))", nutrition: N(360, 6.9, 28.9, 24.1, 936) },
+  { store: "rst-green", id: "g02", name: "연어 포케", serving: "1그릇 350g", price: 11500, role: "main", veg: 2, src: "mix", db: "현미밥 150g + 연어구이 80g + 샐러드_양상추 120g", nutrition: N(596, 62.6, 30.4, 25, 319) },
+  { store: "rst-green", id: "g03", name: "현미밥 추가", serving: "1공기 150g", price: 1500, role: "side", veg: 0, src: "mfds", db: "현미밥 (가정식(분석))", nutrition: N(258, 58.4, 4.7, 0.7, 3) },
+
+  // 음식점: 비빔한끼
+  { store: "rst-bibim", id: "v01", name: "약초비빔밥", serving: "1그릇 400g", price: 7500, role: "main", veg: 3, src: "mfds", db: "비빔밥_약초 (외식(분석))", nutrition: N(512, 80.2, 11.9, 15.9, 972) },
+  { store: "rst-bibim", id: "v02", name: "돌솥비빔밥", serving: "1그릇 380g", price: 8500, role: "main", veg: 3, src: "mfds", db: "비빔밥_돌솥 (가정식(분석))", nutrition: N(559, 93.8, 20.5, 11.2, 1281) },
+
+  // 음식점: 한그릇국밥
+  { store: "rst-gukbap", id: "k01", name: "순대국밥", serving: "1그릇 900g (밥 포함)", price: 9000, role: "main", veg: 1, src: "mfds", db: "국밥_순대국밥 (가정식(분석))", nutrition: N(675, 93.4, 28.5, 20.5, 1134) },
+  { store: "rst-gukbap", id: "k02", name: "돼지국밥", serving: "1그릇 1,200g (밥 포함)", price: 9500, role: "main", veg: 1, src: "mfds", db: "국밥_돼지고기 (외식(분석))", nutrition: N(912, 74.8, 66.4, 38.6, 1092) },
+];
+
+const CATEGORIES = ['cvs', 'delivery', 'restaurant'];
+const ROLE_ORDER = { meal: 0, main: 0, staple: 1, protein: 2, veg: 3, side: 4, drink: 5 };
+const NUTRIENTS = ['calories', 'carbohydrate', 'protein', 'fat', 'sodium'];
+
+function roleRank(m) { return ROLE_ORDER[m.role] ?? 9; }
+function countRole(items, role) { return items.filter(m => m.role === role).length; }
+function fmtWon(n) { return Math.round(n).toLocaleString('ko-KR') + '원'; }
+
+function combos(arr, k, start = 0, prefix = [], out = []) {
+  if (prefix.length === k) { out.push(prefix.slice()); return out; }
+  for (let i = start; i < arr.length; i++) {
+    prefix.push(arr[i]);
+    combos(arr, k, i + 1, prefix, out);
+    prefix.pop();
+  }
+  return out;
+}
+
+/* 한 끼로 말이 되는 조합만 남기는 규칙 */
+function allowed(store, items) {
+  if (store.type === 'cvs') {
+    const meal = countRole(items, 'meal');
+    const staple = countRole(items, 'staple');
+    if (meal + staple === 0) return false;                     // 밥·면·빵 같은 주식이 하나는 있어야 한 끼
+    if (meal > 1 || (meal === 1 && staple > 0)) return false;  // 도시락에 삼각김밥까지는 과해요
+    if (staple > 2 || countRole(items, 'drink') > 1) return false;
+    return true;
+  }
+  if (store.type === 'restaurant') {
+    return countRole(items, 'main') === 1 && countRole(items, 'side') <= 1;
+  }
+  if (store.type === 'delivery') {
+    const main = countRole(items, 'main');
+    return main >= 1 && main <= 2 && countRole(items, 'side') <= 2;
+  }
+  return false;
+}
+
+function totals(items) {
+  const t = { calories: 0, carbohydrate: 0, protein: 0, fat: 0, sodium: 0, veg: 0 };
+  for (const m of items) {
+    for (const k of NUTRIENTS) t[k] += m.nutrition[k];
+    t.veg += m.veg;
+  }
+  t.veg = Math.min(t.veg, 3);
+  return t;
+}
+
+function band(value, lo, hi, max, falloff) {
+  if (value >= lo && value <= hi) return max;
+  const d = value < lo ? lo - value : value - hi;
+  return Math.max(0, max * (1 - d / falloff));
+}
+
+function macroShare(t) {
+  const c = t.carbohydrate * 4, p = t.protein * 4, f = t.fat * 9;
+  const sum = c + p + f || 1;
+  return { carb: c / sum * 100, protein: p / sum * 100, fat: f / sum * 100 };
+}
+
+/* 영양 균형 점수 (100점) — 화면 아래 '점수는 어떻게 매기나요?'와 같은 기준 */
+function scoreOf(t) {
+  const share = macroShare(t);
+  const parts = {
+    kcal: band(t.calories, 550, 800, 25, 300),
+    protein: Math.min(25, t.protein / 30 * 25),
+    veg: [0, 7, 15, 20][t.veg],
+    ratio: band(share.carb, 45, 65, 8, 25) + band(share.protein, 15, 30, 6, 15) + band(share.fat, 15, 35, 6, 20),
+    sodium: band(t.sodium, 0, 1000, 10, 1300),
+  };
+  const score = Math.round(parts.kcal + parts.protein + parts.veg + parts.ratio + parts.sodium);
+  return { score, parts, share };
+}
+
+function trayOf(t) {
+  return {
+    carb: t.carbohydrate >= 50 ? 'full' : t.carbohydrate >= 25 ? 'half' : 'none',
+    protein: t.protein >= 20 ? 'full' : t.protein >= 10 ? 'half' : 'none',
+    veg: t.veg >= 2 ? 'full' : t.veg === 1 ? 'half' : 'none',
+  };
+}
+
+function buildCombos() {
+  const list = [];
+  for (const store of STORES) {
+    const items = MENUS.filter(m => m.store === store.id);
+    const maxK = store.type === 'restaurant' ? 2 : 3;
+    for (let k = 1; k <= maxK; k++) {
+      for (const pick of combos(items, k)) {
+        if (!allowed(store, pick)) continue;
+        const subtotal = pick.reduce((s, m) => s + m.price, 0);
+        if (store.type === 'delivery' && subtotal < store.minOrder) continue;
+        const t = totals(pick);
+        if (t.calories < 300 || t.calories > 1300) continue;  // 한 끼로 너무 적거나 많은 조합은 빼요
+        const fee = store.type === 'delivery' ? store.fee : 0;
+        const ordered = pick.slice().sort((a, b) => roleRank(a) - roleRank(b) || b.price - a.price);
+        const { score, parts, share } = scoreOf(t);
+        list.push({
+          store, items: ordered, subtotal, fee, price: subtotal + fee,
+          totals: t, score, parts, share, tray: trayOf(t),
+          sig: store.id + ':' + pick.map(m => m.id).sort().join('+'),
+          nameSig: ordered.map(m => m.name).sort().join('+'),
+          anchor: ordered[0].name,
+        });
+      }
+    }
+  }
+  return list;
+}
+
+const COMBOS = buildCombos();
+
+/* 비슷한 조합만 줄줄이 나오지 않게, 같은 주메뉴는 먼저 한 번씩만 골라요 */
+function pickVaried(list, n) {
+  const picked = [], used = new Set(), anchors = {};
+  for (const strict of [true, false]) {
+    for (const c of list) {
+      if (picked.length >= n) break;
+      if (used.has(c.sig)) continue;
+      if (strict && anchors[c.anchor]) continue;
+      picked.push(c);
+      used.add(c.sig);
+      anchors[c.anchor] = (anchors[c.anchor] || 0) + 1;
+    }
+  }
+  return picked.sort((a, b) => b.rank - a.rank || a.price - b.price);
+}
+
+/* ratings: { [조합 sig]: 1(맛있었어요) | -1(별로였어요) } */
+function recommend(budget, ratings = {}, limit = 6) {
+  const out = {};
+  for (const cat of CATEGORIES) {
+    const all = COMBOS.filter(c => c.store.type === cat);
+    const minPrice = all.reduce((m, c) => Math.min(m, c.price), Infinity);
+    const fit = all
+      .filter(c => c.price <= budget)
+      .map(c => {
+        const rating = ratings[c.sig] || 0;
+        return { ...c, rating, rank: c.score + (rating === 1 ? 15 : rating === -1 ? -30 : 0) };
+      })
+      .sort((a, b) => b.rank - a.rank || a.price - b.price);
+    const seen = new Set(), unique = [];
+    for (const c of fit) {
+      if (seen.has(c.nameSig)) continue;  // 같은 메뉴 구성은 더 싸거나 점수 높은 하나만
+      seen.add(c.nameSig);
+      unique.push(c);
+    }
+    out[cat] = { list: pickVaried(unique, limit), total: unique.length, minPrice };
+  }
+  return out;
+}
+
+/* 카드 아래 한 줄 추천 이유 */
+function reasonOf(c, budget) {
+  const t = c.totals, p = Math.round(t.protein), left = budget - c.price;
+  const good = [], note = [];
+  if (t.protein >= 25) good.push({ and: `단백질 ${p}g으로 든든하고`, but: `단백질 ${p}g으로 든든하지만`, end: `단백질 ${p}g으로 든든해요` });
+  if (t.veg >= 2) good.push({ and: '채소까지 챙겼고', but: '채소까지 챙겼지만', end: '채소까지 챙겼어요' });
+  if (left >= 3000) good.push({ and: `${fmtWon(left)}이나 남고`, but: `${fmtWon(left)}이나 남지만`, end: `${fmtWon(left)}이나 남아요` });
+  if (t.protein < 15) note.push('단백질이 조금 아쉬워요');
+  if (t.veg === 0) note.push('채소는 따로 챙기면 좋아요');
+  if (t.veg === 1) note.push('채소를 조금 더 곁들이면 좋아요');
+  if (t.sodium >= 1800) note.push(c.items.some(m => /국|찌개|라면|짬뽕/.test(m.name)) ? '국물은 조금 남기는 게 좋아요' : '나트륨이 높은 편이에요');
+  if (t.calories > 1000) note.push('양이 많은 편이에요');
+  if (good.length && note.length) return `${good[0].but} ${note[0]}`;
+  if (good.length >= 2) return `${good[0].and} ${good[1].end}`;
+  if (good.length === 1) return good[0].end;
+  if (note.length) return note[0];
+  return '무난하게 균형 잡힌 한 끼예요';
+}
+
+/* 예산에 따라 바뀌는 한마디 */
+function moodOf(b) {
+  if (b < 3000) return '오늘은 아껴 먹는 날이네요.';
+  if (b < 6000) return '편의점 꿀조합으로 가볼까요?';
+  if (b < 10000) return '든든한 한 끼 충분해요!';
+  if (b < 15000) return '배달까지 노려볼 수 있어요!';
+  return '오늘은 골라 먹는 날!';
+}
+</script>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const fmt = (n) => Math.round(n).toLocaleString('ko-KR');
+  const won = (n) => fmt(n) + '원';
+  const g = (n) => (Math.round(n * 10) / 10).toLocaleString('ko-KR');
+  const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* 평가와 마지막 식비는 이 기기에만 저장돼요 */
+  const RATING_KEY = 'altteulmatteul.ratings.v1';
+  const BUDGET_KEY = 'altteulmatteul.lastBudget.v1';
+  function load(key, fallback) {
+    try {
+      const raw = localStorage.getItem(key);
+      return raw == null ? fallback : JSON.parse(raw);
+    } catch (e) { return fallback; }
+  }
+  function save(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* 저장이 막힌 환경 */ }
+  }
+
+  let ratings = load(RATING_KEY, {});
+  if (!ratings || typeof ratings !== 'object') ratings = {};
+  const state = { budget: 0, active: 'cvs', expanded: { cvs: false, delivery: false, restaurant: false }, last: null, view: null };
+
+  const ICON_UP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path fill="none" d="M7 10v11H4.5A1.5 1.5 0 0 1 3 19.5v-8A1.5 1.5 0 0 1 4.5 10H7z"/><path fill="none" d="M7 10l4.2-7.2A2.3 2.3 0 0 1 15.4 5l-.9 4.5h4.9a2 2 0 0 1 2 2.4l-1.4 7.2A2.3 2.3 0 0 1 17.7 21H7"/></svg>';
+  const ICON_DOWN = ICON_UP.replace('<svg ', '<svg class="flip" ');
+
+  const SLOTS = [
+    { key: 'carb', label: '탄수화물', none: '부족' },
+    { key: 'protein', label: '단백질', none: '부족' },
+    { key: 'veg', label: '채소·과일', none: '없음' },
+  ];
+  const LEVEL = { full: '충분', half: '조금' };
+  const slotWord = (s, lv) => (lv === 'none' ? s.none : LEVEL[lv]);
+  const SRC_LABEL = { mfds: '식약처 DB', mix: '식약처 DB 재료 조합', sample: '예시값' };
+
+  function trayHTML(tray) {
+    const label = SLOTS.map(s => `${s.label} ${slotWord(s, tray[s.key])}`).join(', ');
+    const cells = SLOTS.map(s => `<div class="slot ${s.key}" data-level="${tray[s.key]}"><span class="slot-name">${s.label}</span><span class="slot-state">${slotWord(s, tray[s.key])}</span></div>`).join('');
+    return `<div class="tray" role="img" aria-label="식판: ${label}">${cells}</div>`;
+  }
+
+  function whereLine(store) {
+    if (store.type === 'delivery') return `${store.where} · 최소주문 ${store.minOrder ? won(store.minOrder) : '없음'}`;
+    return store.where;
+  }
+
+  function macrosHTML(c) {
+    const t = c.totals, s = c.share;
+    const rows = [
+      { k: 'carb', label: '탄수화물', grams: t.carbohydrate, pct: s.carb },
+      { k: 'protein', label: '단백질', grams: t.protein, pct: s.protein },
+      { k: 'fat', label: '지방', grams: t.fat, pct: s.fat },
+    ];
+    return `<div class="nutri">
+      <div class="nutri-row"><span class="kcal"><b>${fmt(t.calories)}</b>kcal</span><span class="na">나트륨 ${fmt(t.sodium)}mg</span></div>
+      <div class="macro-bar" aria-hidden="true">${rows.map(r => `<span class="m-${r.k}" style="flex: ${r.pct.toFixed(1)} 1 0"></span>`).join('')}</div>
+      <dl class="macros">${rows.map(r => `<div style="--dot: var(--${r.k})"><dt>${r.label}</dt><dd>${g(r.grams)}g<small>${Math.round(r.pct)}%</small></dd></div>`).join('')}</dl>
+    </div>`;
+  }
+
+  function cardHTML(c, budget) {
+    const left = budget - c.price;
+    const bandName = c.score >= 85 ? 'good' : c.score >= 70 ? 'ok' : 'low';
+    const t = c.totals;
+    const badges = [
+      `<span class="badge liked"${c.rating === 1 ? '' : ' hidden'}>내가 맛있다고 한 조합</span>`,
+      c.store.type === 'delivery' && !c.store.minOrder ? '<span class="badge">1인분 주문 가능</span>' : '',
+      t.sodium >= 1800 ? '<span class="badge warn">나트륨 많음</span>' : '',
+    ].join('');
+    const rows = c.items.map(m => `<li><span class="r-name">${m.name}</span><span class="r-dots"></span><span class="r-price">${won(m.price)}</span></li>`).join('')
+      + (c.fee ? `<li class="r-fee"><span class="r-name">배달팁</span><span class="r-dots"></span><span class="r-price">${won(c.fee)}</span></li>` : '');
+    const facts = c.items.map(m => {
+      const n = m.nutrition;
+      return `<tr><td>${m.name}${m.src === 'sample' ? '*' : ''}<small>${m.serving} · ${SRC_LABEL[m.src]}</small></td><td>${fmt(n.calories)}</td><td>${g(n.carbohydrate)}</td><td>${g(n.protein)}</td><td>${g(n.fat)}</td><td>${fmt(n.sodium)}</td></tr>`;
+    }).join('');
+    return `<article class="card" data-sig="${c.sig}">
+      <div class="card-top">
+        <div class="card-id">
+          <h3 class="store">${c.store.name}</h3>
+          <p class="where">${whereLine(c.store)}</p>
+        </div>
+        <div class="score" data-band="${bandName}" role="img" aria-label="영양 균형 점수 ${c.score}점"><b>${c.score}</b><span>균형 점수</span></div>
+      </div>
+      <div class="badges">${badges}</div>
+      ${trayHTML(c.tray)}
+      <ul class="receipt">${rows}</ul>
+      <div class="total"><span class="total-sum">합계<b>${won(c.price)}</b></span><span class="left-tag">${left > 0 ? `${won(left)} 남아요` : '예산에 딱 맞아요'}</span></div>
+      ${macrosHTML(c)}
+      <p class="reason"><span>추천 이유</span>${reasonOf(c, budget)}</p>
+      <details class="facts">
+        <summary>영양 성분 자세히</summary>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th scope="col">메뉴</th><th scope="col">kcal</th><th scope="col">탄수화물 g</th><th scope="col">단백질 g</th><th scope="col">지방 g</th><th scope="col">나트륨 mg</th></tr></thead>
+            <tbody>${facts}</tbody>
+            <tfoot><tr><td>합계</td><td>${fmt(t.calories)}</td><td>${g(t.carbohydrate)}</td><td>${g(t.protein)}</td><td>${g(t.fat)}</td><td>${fmt(t.sodium)}</td></tr></tfoot>
+          </table>
+        </div>
+        <p class="src">${c.items.some(m => m.src === 'sample') ? '먹는 양 기준 · 식약처 식품영양성분DB(음식) · *는 DB에 없어 예시값' : '먹는 양 기준 · 식약처 식품영양성분DB(음식)'}</p>
+      </details>
+      <div class="card-foot">
+        <span class="rate-label">먹어봤다면?</span>
+        <div class="rate">
+          <button type="button" class="up" data-rate="1" aria-pressed="${c.rating === 1}">${ICON_UP}맛있었어요</button>
+          <button type="button" class="down" data-rate="-1" aria-pressed="${c.rating === -1}">${ICON_DOWN}별로였어요</button>
+        </div>
+      </div>
+    </article>`;
+  }
+
+  function emptyHTML(cat, r) {
+    const min = won(r.minPrice);
+    const copy = {
+      cvs: ['이 예산으로는 편의점 한 끼가 어려워요', `편의점 조합은 ${min}부터 추천할 수 있어요.`],
+      delivery: ['이 예산으로는 배달 주문이 어려워요', `배달팁과 최소주문금액 때문에 ${min}부터 주문할 수 있어요. 편의점 조합이 더 알뜰해요.`],
+      restaurant: ['이 예산으로 갈 수 있는 음식점이 없어요', `음식점 메뉴는 ${min}부터 있어요.`],
+    }[cat];
+    const tray = SLOTS.map(s => `<div class="slot ${s.key}" data-level="none"></div>`).join('');
+    return `<div class="empty"><div class="tray" aria-hidden="true">${tray}</div><b>${copy[0]}</b><p>${copy[1]}</p></div>`;
+  }
+
+  function renderColumn(cat) {
+    const r = state.last[cat];
+    const col = $('#col-' + cat);
+    const cards = col.querySelector('.cards');
+    const more = col.querySelector('.more');
+    $('#tab-' + cat + ' .count').textContent = fmt(r.total);
+    col.querySelector('.col-meta').textContent = r.total ? `조합 ${fmt(r.total)}개 중 균형 좋은 순` : '추천 없음';
+    if (!r.list.length) {
+      cards.innerHTML = emptyHTML(cat, r);
+      more.hidden = true;
+      return;
+    }
+    const shown = state.expanded[cat] ? r.list : r.list.slice(0, 3);
+    cards.innerHTML = shown.map(c => cardHTML(c, state.budget)).join('');
+    more.hidden = r.list.length <= 3;
+    more.textContent = state.expanded[cat] ? '접기' : `다른 조합 ${r.list.length - 3}개 더 보기`;
+    more.setAttribute('aria-expanded', String(state.expanded[cat]));
+  }
+
+  function render() {
+    state.last = recommend(state.budget, ratings);
+    $('#rBudget').textContent = won(state.budget);
+    $('#rMood').textContent = `${moodOf(state.budget)} 영양 균형 점수가 높은 순서예요.`;
+    CATEGORIES.forEach(renderColumn);
+    const l = state.last;
+    $('#live').textContent = `오늘의 식비 ${won(state.budget)}으로 편의점 ${l.cvs.total}개, 배달음식 ${l.delivery.total}개, 음식점 ${l.restaurant.total}개 조합을 찾았어요.`;
+    syncReset();
+  }
+
+  function syncReset() { $('#resetRatings').hidden = Object.keys(ratings).length === 0; }
+
+  /* 금액 입력 */
+  const homeForm = $('#homeForm'), homeInput = $('#homeBudget'), homeError = $('#homeError'), homeHint = $('#homeHint');
+  const resultForm = $('#resultForm'), resultInput = $('#resultBudget'), resultError = $('#resultError');
+
+  function readBudget(input, errorEl) {
+    const digits = input.value.replace(/\D/g, '');
+    const b = digits ? Number(digits) : 0;
+    const fail = (msg) => {
+      errorEl.textContent = msg;
+      errorEl.hidden = false;
+      input.setAttribute('aria-invalid', 'true');
+      input.focus();
+      return 0;
+    };
+    if (!b) return fail('얼마인지 숫자로 알려주세요.');
+    if (b < 1000) return fail('1,000원부터 추천할 수 있어요.');
+    if (b > 100000) return fail('100,000원까지만 입력할 수 있어요.');
+    errorEl.hidden = true;
+    input.removeAttribute('aria-invalid');
+    return b;
+  }
+
+  function formatWhileTyping(input, errorEl, onValue) {
+    input.addEventListener('input', () => {
+      const digits = input.value.replace(/\D/g, '').replace(/^0+/, '').slice(0, 6);
+      input.value = digits ? Number(digits).toLocaleString('ko-KR') : '';
+      errorEl.hidden = true;
+      input.removeAttribute('aria-invalid');
+      if (onValue) onValue(digits ? Number(digits) : 0);
+    });
+  }
+  function syncChips() {
+    const v = Number(homeInput.value.replace(/\D/g, ''));
+    $$('.chip').forEach(ch => ch.setAttribute('aria-pressed', String(Number(ch.dataset.amount) === v)));
+  }
+  const updateHint = (b) => { homeHint.textContent = b >= 1000 ? moodOf(b) : ''; syncChips(); };
+  formatWhileTyping(homeInput, homeError, updateHint);
+  formatWhileTyping(resultInput, resultError);
+
+  function setBudget(b) {
+    state.budget = b;
+    state.expanded = { cvs: false, delivery: false, restaurant: false };
+    save(BUDGET_KEY, b);
+    homeInput.value = fmt(b);
+    resultInput.value = fmt(b);
+    updateHint(b);
+    render();
+  }
+
+  /* 화면 전환: #home(첫 화면) · #result(추천 결과) */
+  const homeView = $('#home'), resultView = $('#result');
+  function show(view) {
+    if (state.view === view) return;
+    const first = state.view === null;
+    state.view = view;
+    const apply = () => {
+      homeView.hidden = view !== 'home';
+      resultView.hidden = view !== 'result';
+      window.scrollTo(0, 0);
+    };
+    const after = () => { if (view === 'result' && !first) $('#resultsTitle').focus({ preventScroll: true }); };
+    if (!first && document.startViewTransition && !reduceMotion()) {
+      document.startViewTransition(apply).updateCallbackDone.then(after, () => {});
+    } else {
+      apply();
+      after();
+    }
+  }
+
+  function route() {
+    if (location.hash === '#result') {
+      if (!state.budget) {
+        const saved = Number(load(BUDGET_KEY, 0));
+        if (saved >= 1000 && saved <= 100000) {
+          setBudget(saved);
+        } else {
+          try { history.replaceState(null, '', '#home'); } catch (e) { /* 주소를 못 바꾸는 환경 */ }
+          show('home');
+          return;
+        }
+      }
+      show('result');
+    } else {
+      show('home');
+    }
+  }
+  window.addEventListener('hashchange', route);
+
+  homeForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const b = readBudget(homeInput, homeError);
+    if (!b) { homeHint.textContent = ''; return; }
+    setBudget(b);
+    if (location.hash !== '#result') location.hash = 'result';
+    show('result');
+  });
+
+  resultForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const b = readBudget(resultInput, resultError);
+    if (!b) return;
+    setBudget(b);
+    window.scrollTo({ top: 0, behavior: reduceMotion() ? 'auto' : 'smooth' });
+  });
+
+  $('#goHome').addEventListener('click', () => {
+    if (location.hash !== '#home') location.hash = 'home';
+    show('home');
+  });
+
+  /* 탭 (좁은 화면) */
+  function setActive(cat, focus) {
+    state.active = cat;
+    CATEGORIES.forEach(c => {
+      const tab = $('#tab-' + c), on = c === cat;
+      tab.setAttribute('aria-selected', String(on));
+      tab.tabIndex = on ? 0 : -1;
+      $('#col-' + c).classList.toggle('is-active', on);
+    });
+    if (focus) $('#tab-' + cat).focus();
+  }
+  const tabs = $('.tabs');
+  tabs.addEventListener('click', (e) => { const t = e.target.closest('[role="tab"]'); if (t) setActive(t.dataset.cat); });
+  tabs.addEventListener('keydown', (e) => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
+    e.preventDefault();
+    const i = CATEGORIES.indexOf(state.active);
+    const next = e.key === 'Home' ? 0 : e.key === 'End' ? 2 : (i + (e.key === 'ArrowRight' ? 1 : 2)) % 3;
+    setActive(CATEGORIES[next], true);
+  });
+
+  /* 알림 */
+  const toast = $('#toast');
+  let toastTimer = 0;
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { toast.hidden = true; }, 2800);
+  }
+
+  /* 평가 */
+  function onRate(btn) {
+    const card = btn.closest('.card');
+    const sig = card.dataset.sig;
+    const val = Number(btn.dataset.rate);
+    if (ratings[sig] === val) {
+      delete ratings[sig];
+      showToast('평가를 지웠어요.');
+    } else {
+      ratings[sig] = val;
+      showToast(val === 1 ? '맛있었어요로 저장했어요. 다음 추천부터 먼저 보여드려요.' : '별로였어요로 저장했어요. 다음 추천부터 뒤로 보낼게요.');
+    }
+    save(RATING_KEY, ratings);
+    const now = ratings[sig] || 0;
+    $$('.card').filter(el => el.dataset.sig === sig).forEach(el => {
+      el.querySelector('[data-rate="1"]').setAttribute('aria-pressed', String(now === 1));
+      el.querySelector('[data-rate="-1"]').setAttribute('aria-pressed', String(now === -1));
+      el.querySelector('.badge.liked').hidden = now !== 1;
+    });
+    syncReset();
+  }
+
+  document.addEventListener('click', (e) => {
+    const rate = e.target.closest('[data-rate]');
+    if (rate) { onRate(rate); return; }
+    const more = e.target.closest('[data-more]');
+    if (more) {
+      const cat = more.dataset.more;
+      state.expanded[cat] = !state.expanded[cat];
+      renderColumn(cat);
+      if (!state.expanded[cat]) $('#col-' + cat).scrollIntoView({ block: 'nearest' });
+      return;
+    }
+    const chip = e.target.closest('[data-amount]');
+    if (chip) {
+      const amount = Number(chip.dataset.amount);
+      homeInput.value = fmt(amount);
+      homeError.hidden = true;
+      homeInput.removeAttribute('aria-invalid');
+      updateHint(amount);
+      return;
+    }
+    if (e.target.closest('#resetRatings')) {
+      ratings = {};
+      save(RATING_KEY, ratings);
+      render();
+      showToast('내 평가를 모두 지웠어요.');
+    }
+  });
+
+  route();
+})();
+</script>
+
+</body>
+</html>
