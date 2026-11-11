@@ -15,43 +15,48 @@ img { max-width: 100%; }
 
 /* 레이아웃: 첫 화면은 검색창처럼 가운데 질문 하나와 금액 입력칸만. 추천을 누르면 결과 화면으로 바뀌고, 위에는 로고와 작은 입력칸, 아래는 편의점·배달음식·음식점 3열(폰은 탭). 조합마다 식판 3칸으로 영양 균형을 보여준다 */
 :root {
-  --bg: #F1F5F0;
+  --bg: #FFF6E6;
   --surface: #FFFFFF;
-  --tray: #DEE6DC;
-  --tray-well: #F7FAF6;
-  --ink: #1C2620;
-  --muted: #56645B;
-  --line: #D3DCD1;
-  --line-strong: #A3B1A6;
-  --accent: #2B6947;
+  --tray: #F5E6C8;
+  --tray-well: #FFFBF3;
+  --ink: #1F2A4D;
+  --muted: #6A6253;
+  --line: #EEDFC2;
+  --line-strong: #CFB98F;
+  --accent: #E8611A;
+  --accent-deep: #B9480C;
   --accent-ink: #FFFFFF;
-  --accent-soft: #DAEADF;
-  --tag: #FFD84D;
+  --accent-soft: #FFE4CF;
+  --brand-navy: #22306A;
+  --wm-outline: #FFFFFF;
+  --doodle-line: #2B2A33;
+  --tag: #FFC93C;
   --tag-ink: #3A2E00;
   --carb: #D99A2B;
-  --carb-soft: #F5E2BA;
+  --carb-soft: #F7E3B5;
   --protein: #CF5579;
-  --protein-soft: #F5D5DF;
+  --protein-soft: #F7D6E0;
   --fat: #5D7BC3;
   --veg: #3E9557;
-  --veg-soft: #D2EBD8;
+  --veg-soft: #D4ECD8;
   --good: #26703F;
   --good-soft: #DCEFE2;
   --ok: #8A5F00;
   --ok-soft: #FAEDC6;
   --low: #B23D2A;
   --low-soft: #F7DCD6;
-  --shadow: 0 1px 2px rgba(28, 38, 32, .06), 0 8px 22px rgba(28, 38, 32, .05);
+  --shadow: 0 1px 2px rgba(60, 40, 10, .06), 0 8px 22px rgba(60, 40, 10, .06);
   --font-display: "Jua", "Gulim", "굴림", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
   --font-body: "Gowun Dodum", "Gulim", "굴림", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-  --radius: 14px;
+  --radius: 16px;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #121815; --surface: #1A221D; --tray: #27312B; --tray-well: #1E2621;
-    --ink: #E3EBE5; --muted: #9AA89F; --line: #2D3933; --line-strong: #4C5D52;
-    --accent: #7CC79A; --accent-ink: #0C1A12; --accent-soft: #1F3428;
-    --tag: #F0CC45; --tag-ink: #2A2100;
+    --bg: #1B1712; --surface: #251F18; --tray: #352C20; --tray-well: #2B241B;
+    --ink: #F4ECDD; --muted: #B7AB96; --line: #3C3328; --line-strong: #5E5141;
+    --accent: #FF8A4C; --accent-deep: #C25A1F; --accent-ink: #1B1007; --accent-soft: #46291A;
+    --brand-navy: #B9C8FF; --wm-outline: #2B241B; --doodle-line: #2B2A33;
+    --tag: #FFC93C; --tag-ink: #2A2100;
     --carb: #E5AE4A; --carb-soft: #3E321A; --protein: #E77C9C; --protein-soft: #3E2330;
     --fat: #8EA3E2; --veg: #6CC184; --veg-soft: #1D3826;
     --good: #7FD19D; --good-soft: #1C3527; --ok: #E9C25A; --ok-soft: #3A3018; --low: #F08C78; --low-soft: #3F221C;
@@ -60,10 +65,11 @@ img { max-width: 100%; }
   }
 }
 :root[data-theme="dark"] {
-  --bg: #121815; --surface: #1A221D; --tray: #27312B; --tray-well: #1E2621;
-  --ink: #E3EBE5; --muted: #9AA89F; --line: #2D3933; --line-strong: #4C5D52;
-  --accent: #7CC79A; --accent-ink: #0C1A12; --accent-soft: #1F3428;
-  --tag: #F0CC45; --tag-ink: #2A2100;
+  --bg: #1B1712; --surface: #251F18; --tray: #352C20; --tray-well: #2B241B;
+  --ink: #F4ECDD; --muted: #B7AB96; --line: #3C3328; --line-strong: #5E5141;
+  --accent: #FF8A4C; --accent-deep: #C25A1F; --accent-ink: #1B1007; --accent-soft: #46291A;
+  --brand-navy: #B9C8FF; --wm-outline: #2B241B; --doodle-line: #2B2A33;
+  --tag: #FFC93C; --tag-ink: #2A2100;
   --carb: #E5AE4A; --carb-soft: #3E321A; --protein: #E77C9C; --protein-soft: #3E2330;
   --fat: #8EA3E2; --veg: #6CC184; --veg-soft: #1D3826;
   --good: #7FD19D; --good-soft: #1C3527; --ok: #E9C25A; --ok-soft: #3A3018; --low: #F08C78; --low-soft: #3F221C;
@@ -114,13 +120,13 @@ button { font: inherit; color: inherit; }
 .home-brand { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-display); font-size: 18px; color: var(--muted); }
 .home-brand .brand-mark { width: 30px; height: 24px; }
 .home-title { font-family: var(--font-display); font-weight: 400; font-size: clamp(40px, 10.5vw, 72px); line-height: 1.12; text-wrap: balance; margin-bottom: 10px; }
-.q { display: inline-block; margin-left: .03em; color: var(--accent); transform-origin: 50% 80%; animation: wiggle 1.3s ease-in-out .4s 2; }
+.q { display: inline-block; margin-left: .03em; color: var(--accent); transform-origin: 50% 80%; animation: wiggle 2.4s ease-in-out .3s infinite; }
 @keyframes wiggle {
-  0%, 100% { transform: rotate(0); }
-  20% { transform: rotate(16deg); }
-  40% { transform: rotate(-11deg); }
-  60% { transform: rotate(7deg); }
-  80% { transform: rotate(-3deg); }
+  0%, 55%, 100% { transform: translateX(0) rotate(0); }
+  10% { transform: translateX(5px) rotate(14deg); }
+  22% { transform: translateX(-4px) rotate(-10deg); }
+  34% { transform: translateX(3px) rotate(6deg); }
+  45% { transform: translateX(-1px) rotate(-2deg); }
 }
 .home-form { width: 100%; display: grid; justify-items: center; gap: 8px; }
 .home-hint { min-height: 1.6em; font-size: 15px; color: var(--accent); }
@@ -285,6 +291,156 @@ button { font: inherit; color: inherit; }
 
 .toast { position: fixed; z-index: 20; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); width: max-content; max-width: calc(100% - 32px); padding: 11px 16px; border-radius: 12px; background: var(--ink); color: var(--bg); font-size: 14px; line-height: 1.45; box-shadow: var(--shadow); }
 
+
+/* ===== 포스터 스타일 ===== */
+.home { position: relative; isolation: isolate; overflow: hidden; }
+.home-center { position: relative; z-index: 1; gap: 10px; padding-block: 56px 36px; }
+.home-foot { position: relative; z-index: 1; }
+.logo-hero { width: min(170px, 46vw); height: auto; display: block; margin-bottom: -6px; }
+.wordmark { display: flex; justify-content: center; gap: .03em; font-family: var(--font-display); font-size: clamp(42px, 11vw, 64px); line-height: 1; letter-spacing: -.01em; }
+.wordmark span {
+  text-shadow: 3px 0 0 var(--wm-outline), -3px 0 0 var(--wm-outline), 0 3px 0 var(--wm-outline), 0 -3px 0 var(--wm-outline),
+    2px 2px 0 var(--wm-outline), -2px 2px 0 var(--wm-outline), 2px -2px 0 var(--wm-outline), -2px -2px 0 var(--wm-outline),
+    0 7px 0 rgba(34, 48, 106, .28);
+}
+.wordmark .w1, .wordmark .w2, .brand-btn .w1, .brand-btn .w2 { -webkit-text-stroke: 1.8px currentColor; }
+.brand-btn .w1, .brand-btn .w2 { -webkit-text-stroke-width: 1px; }
+.wordmark .w1 { color: var(--brand-navy); }
+.wordmark .w2 { color: var(--accent); }
+.swoosh { width: min(170px, 44vw); height: 14px; margin-top: -2px; }
+.swoosh path { fill: none; stroke: var(--tag); stroke-width: 7; stroke-linecap: round; }
+.tagline { font-size: 15px; color: var(--muted); margin-top: -2px; }
+.home-title { font-size: clamp(42px, 11.5vw, 70px); margin: 18px 0 10px; color: var(--ink); }
+.cta { box-shadow: 0 4px 0 var(--accent-deep); }
+.cta:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--accent-deep); }
+.mini-go { box-shadow: 0 3px 0 var(--accent-deep); }
+.search-pill { border-width: 2px; }
+.chip[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-deep); }
+
+/* 음식 낙서 테두리 */
+.doodles { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.d { position: absolute; left: var(--x); top: var(--y); width: var(--s); height: var(--s); transform: rotate(var(--r, 0deg));
+  stroke: var(--doodle-line); stroke-width: 2.4; stroke-linejoin: round; stroke-linecap: round;
+  animation: bob 5.5s ease-in-out var(--dl, 0s) infinite alternate; overflow: visible; }
+@keyframes bob { to { translate: 0 -6px; } }
+@media (max-width: 760px) {
+  .d { width: calc(var(--s) * .6); height: calc(var(--s) * .6); }
+  .d.side { display: none; }
+  .home-center { padding-block: 40px 28px; }
+}
+
+/* 결과 화면 브랜드 */
+.brand-btn .pin-mini { width: 30px; height: 38px; flex: none; }
+.brand-btn .brand-name { display: inline-flex; gap: .02em; font-size: 26px; }
+.brand-btn .w1 { color: var(--brand-navy); }
+.brand-btn .w2 { color: var(--accent); }
+.r-doodles { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; }
+.r-doodles svg { width: 34px; height: 34px; stroke: var(--doodle-line); stroke-width: 2.4; stroke-linejoin: round; stroke-linecap: round; overflow: visible; }
+
+/* 로고 일러스트 (포스터 색 그대로) */
+.lg-phone { fill: #22306A; }
+.lg-screen { fill: #E8EEF8; }
+.lg-road { fill: none; stroke: #FFFFFF; stroke-width: 6; stroke-linecap: round; }
+.lg-park { fill: #8CCB7A; }
+.lg-pin { fill: #E8611A; }
+.lg-face { fill: #22306A; }
+.lg-cut { fill: none; stroke: #FFFFFF; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+.lg-spoon { fill: #FFFFFF; }
+.lg-line { fill: none; stroke: #22306A; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.lg-orbit { fill: none; stroke: #4F7BD9; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 2 9; }
+.lg-coin { fill: #FFC93C; stroke: #22306A; stroke-width: 3; }
+.lg-ticket { fill: #DDEB8B; stroke: #22306A; stroke-width: 3; stroke-linejoin: round; }
+.lg-bubble { fill: #FFFFFF; stroke: #22306A; stroke-width: 3.5; }
+.lg-text { fill: #22306A; font-family: var(--font-display); font-size: 17px; }
+.lg-won { fill: #22306A; font-family: var(--font-display); font-size: 15px; }
+.lg-store-roof { fill: #3A7BD5; stroke: #22306A; stroke-width: 2.5; }
+.lg-store { fill: #FFFFFF; stroke: #22306A; stroke-width: 2.5; }
+.lg-house { fill: #7CC07A; stroke: #22306A; stroke-width: 2.5; }
+.lg-awning { fill: #FFC93C; stroke: #22306A; stroke-width: 2.5; }
+.lg-spark { fill: #FFC93C; }
+
+
+/* 로고를 왼쪽 위로 */
+.home { grid-template-rows: auto 1fr auto; }
+.home-top { display: flex; align-items: center; gap: 8px; padding-block: 18px 0; padding-left: clamp(0px, 2vw, 24px); justify-self: start; position: relative; z-index: 1; }
+.home-top .logo-hero { width: 78px; margin: 0; }
+.home-brandbox { display: grid; justify-items: start; gap: 1px; }
+.home-top .wordmark { font-size: 34px; justify-content: flex-start; }
+.home-top .wordmark span {
+  -webkit-text-stroke-width: 1.2px;
+  text-shadow: 2px 0 0 var(--wm-outline), -2px 0 0 var(--wm-outline), 0 2px 0 var(--wm-outline), 0 -2px 0 var(--wm-outline), 0 4px 0 rgba(34, 48, 106, .25);
+}
+.home-top .swoosh { width: 112px; height: 10px; margin: 0; }
+.home-top .tagline { font-size: 12.5px; margin: 0; }
+.home-center { padding-block: 24px 48px; }
+@media (max-width: 760px) { .home-center { padding-block: 16px 40px; } .home-top { padding-block: 12px 0; } }
+
+
+/* 정렬 */
+.sort { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.sort-btn { display: inline-flex; align-items: center; gap: 5px; padding: 7px 14px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface); color: var(--muted); font-family: var(--font-display); font-size: 15px; cursor: pointer; }
+.sort-btn:hover { border-color: var(--line-strong); color: var(--ink); }
+.sort-btn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); box-shadow: 0 3px 0 var(--accent-deep); }
+.sort-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; }
+.sort-note { font-size: 13px; color: var(--muted); }
+
+
+/* 종류 고르기 */
+.picker { display: grid; gap: 14px; justify-items: center; padding-block: 8px 12px; }
+.picker-title { font-family: var(--font-display); font-weight: 400; font-size: clamp(22px, 5vw, 28px); }
+.picker-grid { width: 100%; max-width: 760px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.pick { display: grid; justify-items: center; gap: 4px; padding: 22px 12px 18px; border-radius: 20px; border: 2px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; box-shadow: 0 4px 0 var(--line); transition: transform .12s, border-color .12s; }
+.pick:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 0 var(--accent-soft); }
+.pick:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--line); }
+.pick-ic { width: 64px; height: 64px; stroke: var(--doodle-line); stroke-width: 2.4; stroke-linejoin: round; stroke-linecap: round; overflow: visible; }
+.pick-name { font-family: var(--font-display); font-size: 22px; line-height: 1.2; }
+.pick-sub { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.pick.is-empty { opacity: .7; }
+.pick.is-empty .pick-sub { color: var(--low); }
+@media (max-width: 560px) {
+  .picker-grid { grid-template-columns: 1fr; gap: 10px; }
+  .pick { grid-template-columns: auto 1fr; justify-items: start; align-items: center; column-gap: 14px; padding: 14px 18px; text-align: left; }
+  .pick-ic { grid-row: span 2; width: 52px; height: 52px; }
+}
+.back-pick { justify-self: start; border: 0; background: none; padding: 2px 0; color: var(--accent-deep); font-size: 14px; cursor: pointer; }
+/* 고른 뒤에는 한 종류만, 한 줄로 */
+.tabs-wrap { display: block; }
+.cols { grid-template-columns: minmax(0, 1fr) !important; max-width: 640px; width: 100%; justify-self: center; }
+.col:not(.is-active) { display: none; }
+.col-title { display: none; }
+.results { justify-items: stretch; max-width: 720px; width: 100%; margin-inline: auto; }
+.tabs-wrap, .cols { max-width: none; width: 100%; }
+
+
+/* 식판: 천천히 차오르고, 가득 차면 물방울이 튀어요 */
+.slot { overflow: visible; --d: 0s; }
+.slot.protein { --d: .35s; }
+.slot.veg { --d: .7s; }
+.slot::before, .slot.protein::before, .slot.veg::before {
+  border-radius: 0 0 8px 8px;
+  animation: fill 1.8s cubic-bezier(.3, .7, .25, 1) var(--d) both;
+}
+.slot[data-level="full"]::before { border-radius: 8px; }
+@keyframes fill { from { height: 0; } }
+.slot[data-level="full"] .slot-state { display: inline-block; transform-origin: left bottom; animation: pop .45s ease-out calc(var(--d) + 1.35s) both; }
+@keyframes pop { 50% { transform: scale(1.14); } }
+.drop { position: absolute; top: 1px; z-index: 1; width: 6px; height: 6px; border-radius: 50%; background: var(--slot); opacity: 0; pointer-events: none;
+  animation: splash .95s ease-out calc(var(--d) + 1.3s) both; }
+.drop:nth-of-type(1) { left: 26%; }
+.drop:nth-of-type(2) { left: 48%; width: 7px; height: 7px; }
+.drop:nth-of-type(3) { left: 70%; width: 5px; height: 5px; }
+@keyframes splash {
+  0% { opacity: 0; transform: translate(0, 6px) scale(.4); }
+  20% { opacity: 1; }
+  50% { opacity: 1; transform: translate(var(--dx), -20px) scale(1.15); }
+  100% { opacity: 0; transform: translate(calc(var(--dx) * 1.8), 3px) scale(.6); }
+}
+
+
+/* 화면에 보이기 전에는 비워두기 */
+.tray.armed:not(.play) .slot::before { animation: none; height: 0; border-top-color: transparent; }
+.tray.armed:not(.play) .drop, .tray.armed:not(.play) .slot-state { animation: none; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
@@ -292,17 +448,65 @@ button { font: inherit; color: inherit; }
 </head>
 <body>
 <!-- 첫 화면 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-onigiri" viewBox="0 0 64 64"><path d="M32 7c6 0 25 31 25 39 0 8-9 11-25 11S7 54 7 46C7 38 26 7 32 7z" fill="#FFFFFF"/><rect x="20" y="37" width="24" height="20" rx="2" fill="#2F3B33"/><path d="M27 22l1 1M36 26l1 1M30 30l1 1" fill="none"/></symbol>
+    <symbol id="i-kimbap" viewBox="0 0 64 64"><circle cx="32" cy="32" r="25" fill="#2F3B33"/><circle cx="32" cy="32" r="19" fill="#FFFFFF"/><rect x="22" y="25" width="7" height="7" rx="1.5" fill="#E8611A" stroke="none"/><rect x="33" y="24" width="8" height="7" rx="1.5" fill="#4C9A53" stroke="none"/><rect x="27" y="34" width="7" height="7" rx="1.5" fill="#F4C542" stroke="none"/><rect x="37" y="34" width="6" height="7" rx="1.5" fill="#C0392B" stroke="none"/></symbol>
+    <symbol id="i-ramen" viewBox="0 0 64 64"><path d="M24 13c-3-3 3-5 0-9M32 13c-3-3 3-5 0-9M40 13c-3-3 3-5 0-9" fill="none"/><path d="M14 22h36l-4 35H18z" fill="#E8492E"/><rect x="12" y="17" width="40" height="7" rx="2.5" fill="#FFFFFF"/><rect x="18" y="33" width="28" height="10" rx="2" fill="#FFF1D6" stroke="none"/><path d="M22 38h20" fill="none" stroke="#E8492E"/></symbol>
+    <symbol id="i-dosirak" viewBox="0 0 64 64"><rect x="5" y="13" width="54" height="40" rx="6" fill="#3A3A44"/><rect x="9" y="17" width="23" height="32" rx="2.5" fill="#FFFFFF"/><circle cx="20.5" cy="33" r="4" fill="#E04B3A" stroke="none"/><rect x="35" y="17" width="20" height="14" rx="2.5" fill="#D98A3A"/><path d="M38 22h14M38 26h14" fill="none" stroke="#A9601F"/><rect x="35" y="34" width="9" height="15" rx="2.5" fill="#5DAA5E"/><rect x="46" y="34" width="9" height="15" rx="2.5" fill="#F4C542"/></symbol>
+    <symbol id="i-tteok" viewBox="0 0 64 64"><path d="M7 30h50c0 15-11 25-25 25S7 45 7 30z" fill="#FFFFFF"/><ellipse cx="32" cy="30" rx="25" ry="7.5" fill="#E5432F"/><rect x="18" y="24" width="13" height="5.5" rx="2.75" fill="#FFE9D6" transform="rotate(-14 24 27)"/><rect x="33" y="25" width="13" height="5.5" rx="2.75" fill="#FFE9D6" transform="rotate(10 39 28)"/><path d="M26 33l4-1M38 31l3 1" fill="none" stroke="#4C9A53"/></symbol>
+    <symbol id="i-sandwich" viewBox="0 0 64 64"><path d="M8 47L32 11l24 36z" fill="#F2D3A0"/><path d="M12 41c4-3 8 3 12 0s8 3 12 0 8 3 12 0 6 2 6 2" fill="none" stroke="#5DAA5E" stroke-width="4"/><path d="M8 47h48v6H8z" fill="#E9B872"/><path d="M15 36h34" fill="none" stroke="#E04B3A" stroke-width="3.5"/></symbol>
+    <symbol id="i-salad" viewBox="0 0 64 64"><circle cx="22" cy="27" r="8" fill="#6BBF59"/><circle cx="34" cy="23" r="9" fill="#8CCB7A"/><circle cx="45" cy="28" r="7" fill="#E5432F"/><circle cx="29" cy="31" r="5" fill="#F4C542"/><path d="M7 32h50c0 14-11 23-25 23S7 46 7 32z" fill="#FFFFFF"/></symbol>
+    <symbol id="i-milk" viewBox="0 0 64 64"><path d="M20 22l6-11h12l6 11v35H20z" fill="#FFFFFF"/><path d="M20 22h24M26 11v-4h12v4" fill="none"/><rect x="20" y="33" width="24" height="12" fill="#8DBEEA"/><path d="M26 39h12" fill="none" stroke="#FFFFFF"/></symbol>
+    <symbol id="i-chicken" viewBox="0 0 64 64"><path d="M12 30h40l-5 26H17z" fill="#E5432F"/><path d="M18 30v26M26 30v26M34 30v26M42 30v26" fill="none" stroke="#FFFFFF" stroke-width="3"/><circle cx="24" cy="24" r="8" fill="#D98A3A"/><circle cx="36" cy="21" r="9" fill="#C97A2C"/><circle cx="45" cy="26" r="7" fill="#D98A3A"/></symbol>
+    <symbol id="i-chopsticks" viewBox="0 0 64 64"><path d="M14 54L44 8M22 56L50 12" fill="none" stroke-width="3"/><ellipse cx="44" cy="46" rx="6" ry="8" fill="#D9DEE7" transform="rotate(30 44 46)"/><path d="M41 51L30 60" fill="none" stroke-width="3"/></symbol>
+    <symbol id="i-star" viewBox="0 0 64 64"><path d="M32 8l6 16 16 6-16 6-6 16-6-16-16-6 16-6z" fill="#FFC93C"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 64 64"><path d="M32 52C10 38 12 16 24 16c5 0 8 4 8 8 0-4 3-8 8-8 12 0 14 22-8 36z" fill="#F37A8E"/></symbol>
+    <symbol id="i-note" viewBox="0 0 64 64"><path d="M27 46V14l20-4v30" fill="none"/><circle cx="21" cy="46" r="6" fill="#2B2A33"/><circle cx="41" cy="40" r="6" fill="#2B2A33"/></symbol>
+  </defs>
+</svg>
 <main class="view home" id="home">
-  <div class="home-center">
-    <p class="home-brand">
-      <svg class="brand-mark" viewBox="0 0 38 30" aria-hidden="true">
-        <rect x="1.5" y="1.5" width="35" height="27" rx="8" fill="none" stroke="currentColor" stroke-width="2.6"/>
-        <rect x="6.5" y="6.5" width="12" height="17" rx="3.5" fill="currentColor"/>
-        <rect x="21.5" y="6.5" width="10" height="7.5" rx="2.6" fill="currentColor" fill-opacity=".55"/>
-        <rect x="21.5" y="16" width="10" height="7.5" rx="2.6" fill="currentColor" fill-opacity=".3"/>
+  <header class="home-top">
+    <svg class="logo-hero" viewBox="20 0 240 190" aria-hidden="true">
+        <path class="lg-spark" d="M206 22l4 10 10 4-10 4-4 10-4-10-10-4 10-4z"/>
+        <g transform="rotate(-9 130 140)">
+          <rect class="lg-phone" x="22" y="100" width="216" height="84" rx="18"/>
+          <rect class="lg-screen" x="32" y="108" width="196" height="68" rx="11"/>
+          <path class="lg-road" d="M32 150h196M96 108v68M168 108v68M32 126c40 4 70-6 100 2s60 10 96 4"/>
+          <rect class="lg-park" x="174" y="154" width="44" height="16" rx="6"/>
+          <rect class="lg-park" x="40" y="156" width="36" height="14" rx="6"/>
+        </g>
+        <g transform="translate(48 108)">
+          <rect class="lg-store" x="0" y="14" width="34" height="24" rx="3"/>
+          <rect class="lg-store-roof" x="-3" y="4" width="40" height="12" rx="3"/>
+          <text class="lg-won" x="10" y="15" style="font-size:9px;fill:#FFFFFF">24</text>
+          <rect x="6" y="22" width="9" height="16" rx="1.5" fill="#BFD8F5" stroke="#22306A" stroke-width="2"/>
+        </g>
+        <g transform="translate(184 106)">
+          <rect class="lg-store" x="0" y="16" width="34" height="22" rx="3"/>
+          <path class="lg-awning" d="M-3 8h40v9c-4 4-8 4-10 0-3 4-7 4-10 0-3 4-7 4-10 0-3 4-7 4-10 0z"/>
+        </g>
+        <path class="lg-house" d="M150 122l16-14 16 14v22h-32z"/>
+        <circle class="lg-coin" cx="140" cy="156" r="13"/>
+        <text class="lg-won" x="133" y="161">₩</text>
+        <path class="lg-orbit" d="M58 78c30-22 120-26 150-6"/>
+        <path class="lg-pin" d="M130 140c-20-28-36-44-36-68a36 36 0 0 1 72 0c0 24-16 40-36 68z"/>
+        <circle class="lg-face" cx="130" cy="70" r="24"/>
+        <path class="lg-cut" d="M121 56v10c0 4 2 6 4 6s4-2 4-6V56M125 56v10M125 72v15"/>
+        <ellipse class="lg-spoon" cx="139" cy="62" rx="5" ry="7"/>
+        <path class="lg-cut" d="M139 69v18"/>
+        <g transform="rotate(14 214 82)">
+          <rect class="lg-ticket" x="192" y="68" width="46" height="26" rx="4"/>
+          <text class="lg-won" x="208" y="87">₩</text>
+        </g>
       </svg>
-      알뜰맛뜰
-    </p>
+    <div class="home-brandbox">
+      <p class="wordmark" aria-label="알뜰맛뜰"><span class="w1">알뜰</span><span class="w2">맛뜰</span></p>
+      <svg class="swoosh" viewBox="0 0 300 20" aria-hidden="true"><path d="M12 14C90 3 210 3 288 12"/></svg>
+      <p class="tagline">내 식비에 맞춘 AI 건강 한 끼</p>
+    </div>
+  </header>
+  <div class="home-center">
     <h1 class="home-title" id="homeTitle">오늘의 식비는<span class="q">?</span></h1>
     <form class="home-form" id="homeForm" novalidate>
       <label class="sr-only" for="homeBudget">오늘의 식비 (원)</label>
@@ -333,13 +537,8 @@ button { font: inherit; color: inherit; }
 <main class="view result" id="result" hidden>
   <header class="r-top">
     <button type="button" class="brand-btn" id="goHome" aria-label="알뜰맛뜰 첫 화면으로">
-      <svg class="brand-mark" viewBox="0 0 38 30" aria-hidden="true">
-        <rect x="1.5" y="1.5" width="35" height="27" rx="8" fill="none" stroke="currentColor" stroke-width="2.6"/>
-        <rect x="6.5" y="6.5" width="12" height="17" rx="3.5" fill="currentColor"/>
-        <rect x="21.5" y="6.5" width="10" height="7.5" rx="2.6" fill="currentColor" fill-opacity=".55"/>
-        <rect x="21.5" y="16" width="10" height="7.5" rx="2.6" fill="currentColor" fill-opacity=".3"/>
-      </svg>
-      <span class="brand-name">알뜰맛뜰</span>
+      <svg class="pin-mini" viewBox="0 0 30 38" aria-hidden="true"><path class="lg-pin" d="M15 37C7 26 1 20 1 13a14 14 0 0 1 28 0c0 7-6 13-14 24z"/><circle class="lg-face" cx="15" cy="13" r="8.5"/><path class="lg-cut" style="stroke-width:2" d="M12 8v4c0 1.5 1 2 1.5 2M12 14v5M17.5 8.5v10.5"/></svg>
+      <span class="brand-name"><span class="w1">알뜰</span><span class="w2">맛뜰</span></span>
     </button>
     <form class="mini-search" id="resultForm" novalidate>
       <label class="sr-only" for="resultBudget">오늘의 식비 (원)</label>
@@ -356,6 +555,20 @@ button { font: inherit; color: inherit; }
     <div class="results-head">
       <h1 class="r-title" id="resultsTitle" tabindex="-1">오늘의 식비 <span id="rBudget">0원</span>, 이렇게 먹어요</h1>
       <p id="rMood"></p>
+      <div class="sort" id="sortBar" role="group" aria-label="정렬">
+        <button type="button" class="sort-btn" data-sort="score" aria-pressed="true">균형 좋은 순</button>
+        <button type="button" class="sort-btn" data-sort="near" aria-pressed="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21c-4-5-7-8-7-12a7 7 0 0 1 14 0c0 4-3 7-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>가까운 순</button>
+        <span class="sort-note" id="sortNote" aria-live="polite"></span>
+      </div>
+    </div>
+    <div class="picker" id="picker">
+      <h2 class="picker-title">어디서 먹을까요?</h2>
+      <div class="picker-grid">
+        <button type="button" class="pick" data-pick="cvs"><svg class="pick-ic"><use href="#i-onigiri"/></svg><span class="pick-name">편의점</span><span class="pick-sub"></span></button>
+        <button type="button" class="pick" data-pick="delivery"><svg class="pick-ic"><use href="#i-chicken"/></svg><span class="pick-name">배달음식</span><span class="pick-sub"></span></button>
+        <button type="button" class="pick" data-pick="restaurant"><svg class="pick-ic"><use href="#i-tteok"/></svg><span class="pick-name">음식점</span><span class="pick-sub"></span></button>
+      </div>
     </div>
     <div class="tabs-wrap">
       <div class="tabs" role="tablist" aria-label="추천 종류">
@@ -388,6 +601,7 @@ button { font: inherit; color: inherit; }
   </section>
 
   <footer class="foot">
+    <div class="r-doodles" aria-hidden="true"><svg><use href="#i-onigiri"/></svg><svg><use href="#i-kimbap"/></svg><svg><use href="#i-ramen"/></svg><svg><use href="#i-dosirak"/></svg><svg><use href="#i-tteok"/></svg><svg><use href="#i-salad"/></svg><svg><use href="#i-sandwich"/></svg></div>
     <details class="how">
       <summary>점수는 어떻게 매기나요?</summary>
       <p>예산 안에서 만들 수 있는 조합마다 100점 만점으로 영양 균형 점수를 계산하고, 높은 순서로 보여줘요.</p>
@@ -398,6 +612,7 @@ button { font: inherit; color: inherit; }
         <li><b>탄단지 비율 20점</b><span>칼로리 기준 탄수화물 45~65%, 단백질 15~30%, 지방 15~35%</span></li>
         <li><b>나트륨 10점</b><span>1,000mg 이하면 만점, 2,300mg 이상이면 0점</span></li>
         <li><b>내 평가</b><span>맛있었어요는 +15점, 별로였어요는 −30점으로 순서에 반영해요. 평가는 이 기기에만 저장돼요.</span></li>
+        <li><b>가까운 순</b><span>내 위치에서 가까운 가게부터, 가게마다 균형 좋은 조합을 보여줘요. 위치는 이 기기 안에서 거리 계산에만 쓰고 어디에도 보내거나 저장하지 않아요.</span></li>
       </ul>
     </details>
     <p class="note">가게 이름과 가격은 시연용 예시예요. 영양 정보는 식약처 식품영양성분DB(음식, 2026년 9월 29일 기준) 값을 먹는 양에 맞게 환산했고, 도시락·백반은 재료별 값을 더했어요. 음식 DB에 없는 편의점 제품 일부(우유, 바나나 등)는 예시값이에요.</p>
@@ -428,24 +643,25 @@ const NUTRITION_SOURCE = 'mfds';
 
 const N = (calories, carbohydrate, protein, fat, sodium) => ({ calories, carbohydrate, protein, fat, sodium });
 
-/* type: cvs(편의점) · delivery(배달음식) · restaurant(음식점)
+/* lat·lng: 가게 위치 (지금은 예시 가게라 학교 주변에 임의로 둔 좌표예요)
+   type: cvs(편의점) · delivery(배달음식) · restaurant(음식점)
    배달 가게는 minOrder(최소주문금액)와 fee(배달팁)가 있어요. */
 const STORES = [
-  { id: 'cvs-saessak', type: 'cvs', name: '새싹편의점 정문점', where: '정문 앞 · 도보 3분' },
-  { id: 'cvs-haru', type: 'cvs', name: '하루마트 기숙사점', where: '기숙사 1층 · 도보 1분' },
+  { id: 'cvs-saessak', lat: 37.2768, lng: 127.9040, type: 'cvs', name: '새싹편의점 정문점', where: '정문 앞 · 도보 3분' },
+  { id: 'cvs-haru', lat: 37.2792, lng: 127.9006, type: 'cvs', name: '하루마트 기숙사점', where: '기숙사 1층 · 도보 1분' },
 
-  { id: 'dlv-dosirak', type: 'delivery', name: '한끼도시락', where: '배달 25~35분', minOrder: 7000, fee: 1900 },
-  { id: 'dlv-honbap', type: 'delivery', name: '혼밥덮밥', where: '배달 30~40분', minOrder: 0, fee: 2900 },
-  { id: 'dlv-greenbowl', type: 'delivery', name: '그린볼샐러드', where: '배달 30~45분', minOrder: 10000, fee: 2500 },
-  { id: 'dlv-jjajang', type: 'delivery', name: '용반점', where: '배달 20~30분', minOrder: 12000, fee: 2000 },
-  { id: 'dlv-bunsik', type: 'delivery', name: '분식마을', where: '배달 25~40분', minOrder: 9000, fee: 2000 },
+  { id: 'dlv-dosirak', lat: 37.2758, lng: 127.9081, type: 'delivery', name: '한끼도시락', where: '배달 25~35분', minOrder: 7000, fee: 1900 },
+  { id: 'dlv-honbap', lat: 37.2746, lng: 127.9095, type: 'delivery', name: '혼밥덮밥', where: '배달 30~40분', minOrder: 0, fee: 2900 },
+  { id: 'dlv-greenbowl', lat: 37.2789, lng: 127.9112, type: 'delivery', name: '그린볼샐러드', where: '배달 30~45분', minOrder: 10000, fee: 2500 },
+  { id: 'dlv-jjajang', lat: 37.3025, lng: 127.9200, type: 'delivery', name: '용반점', where: '배달 20~30분', minOrder: 12000, fee: 2000 },
+  { id: 'dlv-bunsik', lat: 37.2776, lng: 127.9090, type: 'delivery', name: '분식마을', where: '배달 25~40분', minOrder: 9000, fee: 2000 },
 
-  { id: 'rst-jeongmun', type: 'restaurant', name: '정문분식', where: '정문 앞 · 도보 4분' },
-  { id: 'rst-baekban', type: 'restaurant', name: '든든백반', where: '후문 · 도보 7분 · 기본 반찬 제공' },
-  { id: 'rst-deopbap', type: 'restaurant', name: '캠퍼스덮밥', where: '정문 · 도보 5분' },
-  { id: 'rst-green', type: 'restaurant', name: '초록한그릇', where: '후문 · 도보 9분' },
-  { id: 'rst-bibim', type: 'restaurant', name: '비빔한끼', where: '정문 · 도보 6분' },
-  { id: 'rst-gukbap', type: 'restaurant', name: '한그릇국밥', where: '시내 방향 · 도보 10분' },
+  { id: 'rst-jeongmun', lat: 37.2765, lng: 127.9046, type: 'restaurant', name: '정문분식', where: '정문 앞 · 도보 4분' },
+  { id: 'rst-baekban', lat: 37.2826, lng: 127.8986, type: 'restaurant', name: '든든백반', where: '후문 · 도보 7분 · 기본 반찬 제공' },
+  { id: 'rst-deopbap', lat: 37.2770, lng: 127.9053, type: 'restaurant', name: '캠퍼스덮밥', where: '정문 · 도보 5분' },
+  { id: 'rst-green', lat: 37.2833, lng: 127.8978, type: 'restaurant', name: '초록한그릇', where: '후문 · 도보 9분' },
+  { id: 'rst-bibim', lat: 37.2761, lng: 127.9061, type: 'restaurant', name: '비빔한끼', where: '정문 · 도보 6분' },
+  { id: 'rst-gukbap', lat: 37.2986, lng: 127.9181, type: 'restaurant', name: '한그릇국밥', where: '시내 방향 · 도보 10분' },
 ];
 
 /* role
@@ -671,8 +887,29 @@ function pickVaried(list, n) {
   return picked.sort((a, b) => b.rank - a.rank || a.price - b.price);
 }
 
-/* ratings: { [조합 sig]: 1(맛있었어요) | -1(별로였어요) } */
-function recommend(budget, ratings = {}, limit = 6) {
+/* 두 지점 사이 거리(m) */
+function distanceM(a, b) {
+  const R = 6371000, rad = Math.PI / 180;
+  const dLat = (b.lat - a.lat) * rad, dLng = (b.lng - a.lng) * rad;
+  const s = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * rad) * Math.cos(b.lat * rad) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(s));
+}
+
+/* 가까운 순: 가까운 가게부터, 가게마다 균형 좋은 조합 최대 2개 */
+function pickNear(list, n) {
+  const byStore = {};
+  for (const c of list) (byStore[c.store.id] = byStore[c.store.id] || []).push(c);
+  const stores = Object.values(byStore).sort((a, b) => a[0].dist - b[0].dist);
+  const out = [];
+  for (let round = 0; round < 2; round++) {
+    for (const arr of stores) if (arr[round] && out.length < n) out.push(arr[round]);
+  }
+  return out.sort((a, b) => a.dist - b.dist || b.rank - a.rank);
+}
+
+/* ratings: { [조합 sig]: 1(맛있었어요) | -1(별로였어요) }
+   origin: { lat, lng } 를 주면 가까운 순으로 골라요 */
+function recommend(budget, ratings = {}, limit = 6, origin = null) {
   const out = {};
   for (const cat of CATEGORIES) {
     const all = COMBOS.filter(c => c.store.type === cat);
@@ -681,7 +918,7 @@ function recommend(budget, ratings = {}, limit = 6) {
       .filter(c => c.price <= budget)
       .map(c => {
         const rating = ratings[c.sig] || 0;
-        return { ...c, rating, rank: c.score + (rating === 1 ? 15 : rating === -1 ? -30 : 0) };
+        return { ...c, rating, rank: c.score + (rating === 1 ? 15 : rating === -1 ? -30 : 0), dist: origin ? distanceM(origin, c.store) : null };
       })
       .sort((a, b) => b.rank - a.rank || a.price - b.price);
     const seen = new Set(), unique = [];
@@ -690,7 +927,7 @@ function recommend(budget, ratings = {}, limit = 6) {
       seen.add(c.nameSig);
       unique.push(c);
     }
-    out[cat] = { list: pickVaried(unique, limit), total: unique.length, minPrice };
+    out[cat] = { list: origin ? pickNear(unique, limit) : pickVaried(unique, limit), total: unique.length, minPrice };
   }
   return out;
 }
@@ -748,7 +985,8 @@ function moodOf(b) {
 
   let ratings = load(RATING_KEY, {});
   if (!ratings || typeof ratings !== 'object') ratings = {};
-  const state = { budget: 0, active: 'cvs', expanded: { cvs: false, delivery: false, restaurant: false }, last: null, view: null };
+  const state = { budget: 0, active: 'cvs', expanded: { cvs: false, delivery: false, restaurant: false }, last: null, view: null, sort: 'score', origin: null, originLabel: '', pick: null };
+  const CAMPUS = { lat: 37.2772, lng: 127.9041, label: '학교 정문' };
 
   const ICON_UP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path fill="none" d="M7 10v11H4.5A1.5 1.5 0 0 1 3 19.5v-8A1.5 1.5 0 0 1 4.5 10H7z"/><path fill="none" d="M7 10l4.2-7.2A2.3 2.3 0 0 1 15.4 5l-.9 4.5h4.9a2 2 0 0 1 2 2.4l-1.4 7.2A2.3 2.3 0 0 1 17.7 21H7"/></svg>';
   const ICON_DOWN = ICON_UP.replace('<svg ', '<svg class="flip" ');
@@ -764,12 +1002,24 @@ function moodOf(b) {
 
   function trayHTML(tray) {
     const label = SLOTS.map(s => `${s.label} ${slotWord(s, tray[s.key])}`).join(', ');
-    const cells = SLOTS.map(s => `<div class="slot ${s.key}" data-level="${tray[s.key]}"><span class="slot-name">${s.label}</span><span class="slot-state">${slotWord(s, tray[s.key])}</span></div>`).join('');
+    const DROPS = '<i class="drop" style="--dx:-7px"></i><i class="drop" style="--dx:1px"></i><i class="drop" style="--dx:8px"></i>';
+    const cells = SLOTS.map(s => `<div class="slot ${s.key}" data-level="${tray[s.key]}">${tray[s.key] === 'full' ? DROPS : ''}<span class="slot-name">${s.label}</span><span class="slot-state">${slotWord(s, tray[s.key])}</span></div>`).join('');
     return `<div class="tray" role="img" aria-label="식판: ${label}">${cells}</div>`;
   }
 
-  function whereLine(store) {
-    if (store.type === 'delivery') return `${store.where} · 최소주문 ${store.minOrder ? won(store.minOrder) : '없음'}`;
+  const fmtDist = (m) => (m < 1000 ? `${Math.max(10, Math.round(m / 10) * 10)}m` : `${(m / 1000).toFixed(1)}km`);
+  const walkMin = (m) => Math.max(1, Math.round(m * 1.3 / 75));
+
+  function whereLine(c) {
+    const store = c.store;
+    if (store.type === 'delivery') {
+      const far = c.dist != null ? ` · ${fmtDist(c.dist)}` : '';
+      return `${store.where}${far} · 최소주문 ${store.minOrder ? won(store.minOrder) : '없음'}`;
+    }
+    if (c.dist != null) {
+      const place = store.where.split(' · ')[0];
+      return `${place} · ${state.originLabel}에서 ${fmtDist(c.dist)} · 걸어서 ${walkMin(c.dist)}분`;
+    }
     return store.where;
   }
 
@@ -806,7 +1056,7 @@ function moodOf(b) {
       <div class="card-top">
         <div class="card-id">
           <h3 class="store">${c.store.name}</h3>
-          <p class="where">${whereLine(c.store)}</p>
+          <p class="where">${whereLine(c)}</p>
         </div>
         <div class="score" data-band="${bandName}" role="img" aria-label="영양 균형 점수 ${c.score}점"><b>${c.score}</b><span>균형 점수</span></div>
       </div>
@@ -848,30 +1098,56 @@ function moodOf(b) {
     return `<div class="empty"><div class="tray" aria-hidden="true">${tray}</div><b>${copy[0]}</b><p>${copy[1]}</p></div>`;
   }
 
+  /* 식판이 화면에 보일 때마다 비운 상태에서 천천히 채우고, 화면 밖으로 나가면 다시 비워요 */
+  const trayObserver = 'IntersectionObserver' in window
+    ? new IntersectionObserver((entries) => {
+        entries.forEach((en) => {
+          if (en.intersectionRatio >= 0.6) en.target.classList.add('play');
+          else if (!en.isIntersecting) en.target.classList.remove('play');
+        });
+      }, { threshold: [0, 0.6] })
+    : null;
+  function armTrays(root) {
+    if (!trayObserver) return;
+    root.querySelectorAll('.card .tray').forEach((t) => { t.classList.add('armed'); trayObserver.observe(t); });
+  }
+
   function renderColumn(cat) {
     const r = state.last[cat];
     const col = $('#col-' + cat);
     const cards = col.querySelector('.cards');
     const more = col.querySelector('.more');
     $('#tab-' + cat + ' .count').textContent = fmt(r.total);
-    col.querySelector('.col-meta').textContent = r.total ? `조합 ${fmt(r.total)}개 중 균형 좋은 순` : '추천 없음';
+    col.querySelector('.col-meta').textContent = r.total ? `조합 ${fmt(r.total)}개 중 ${state.sort === 'near' ? '가까운 순' : '균형 좋은 순'}` : '추천 없음';
     if (!r.list.length) {
       cards.innerHTML = emptyHTML(cat, r);
       more.hidden = true;
       return;
     }
     const shown = state.expanded[cat] ? r.list : r.list.slice(0, 3);
+    if (trayObserver) cards.querySelectorAll('.tray.armed').forEach(t => trayObserver.unobserve(t));
     cards.innerHTML = shown.map(c => cardHTML(c, state.budget)).join('');
+    armTrays(cards);
     more.hidden = r.list.length <= 3;
     more.textContent = state.expanded[cat] ? '접기' : `다른 조합 ${r.list.length - 3}개 더 보기`;
     more.setAttribute('aria-expanded', String(state.expanded[cat]));
   }
 
   function render() {
-    state.last = recommend(state.budget, ratings);
+    state.last = recommend(state.budget, ratings, 6, state.sort === 'near' ? state.origin : null);
     $('#rBudget').textContent = won(state.budget);
-    $('#rMood').textContent = `${moodOf(state.budget)} 영양 균형 점수가 높은 순서예요.`;
+    $('#rMood').textContent = `${moodOf(state.budget)} ${!state.pick ? '편의점, 배달음식, 음식점 중에 골라보세요.' : state.sort === 'near' ? '가까운 가게부터 보여드려요.' : '영양 균형 점수가 높은 순서예요.'}`;
     CATEGORIES.forEach(renderColumn);
+    CATEGORIES.forEach(cat => {
+      const r = state.last[cat];
+      const btn = $(`.pick[data-pick="${cat}"]`);
+      const best = r.list.reduce((m, c) => Math.max(m, c.score), 0);
+      btn.querySelector('.pick-sub').textContent = r.total
+        ? `조합 ${fmt(r.total)}개 · 최고 ${best}점`
+        : `${won(r.minPrice)}부터 가능`;
+      btn.classList.toggle('is-empty', !r.total);
+    });
+    syncPick();
     const l = state.last;
     $('#live').textContent = `오늘의 식비 ${won(state.budget)}으로 편의점 ${l.cvs.total}개, 배달음식 ${l.delivery.total}개, 음식점 ${l.restaurant.total}개 조합을 찾았어요.`;
     syncReset();
@@ -971,6 +1247,7 @@ function moodOf(b) {
     e.preventDefault();
     const b = readBudget(homeInput, homeError);
     if (!b) { homeHint.textContent = ''; return; }
+    state.pick = null;
     setBudget(b);
     if (location.hash !== '#result') location.hash = 'result';
     show('result');
@@ -990,8 +1267,24 @@ function moodOf(b) {
   });
 
   /* 탭 (좁은 화면) */
+  function syncPick() {
+    const picked = !!state.pick;
+    $('#picker').hidden = picked;
+    $('.tabs-wrap').hidden = !picked;
+    $('.cols').hidden = !picked;
+    $('#sortBar').hidden = !picked;
+    if (picked) setActive(state.pick);
+  }
+  function choose(cat) {
+    state.pick = cat;
+    render();
+    window.scrollTo({ top: 0, behavior: reduceMotion() ? 'auto' : 'smooth' });
+    $('#tab-' + cat).focus({ preventScroll: true });
+  }
+
   function setActive(cat, focus) {
     state.active = cat;
+    if (state.pick) state.pick = cat;
     CATEGORIES.forEach(c => {
       const tab = $('#tab-' + c), on = c === cat;
       tab.setAttribute('aria-selected', String(on));
@@ -1062,6 +1355,10 @@ function moodOf(b) {
       updateHint(amount);
       return;
     }
+    const pickBtn = e.target.closest('[data-pick]');
+    if (pickBtn) { choose(pickBtn.dataset.pick); return; }
+    const sortBtn = e.target.closest('[data-sort]');
+    if (sortBtn) { setSort(sortBtn.dataset.sort); return; }
     if (e.target.closest('#resetRatings')) {
       ratings = {};
       save(RATING_KEY, ratings);
@@ -1069,6 +1366,44 @@ function moodOf(b) {
       showToast('내 평가를 모두 지웠어요.');
     }
   });
+
+  /* 가까운 순: 위치는 이 기기 안에서 거리 계산에만 쓰고 어디에도 보내거나 저장하지 않아요 */
+  function syncSort() {
+    $$('.sort-btn').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.sort === state.sort)));
+  }
+  function useOrigin(origin, label, note) {
+    state.origin = origin;
+    state.originLabel = label;
+    $('#sortNote').textContent = note;
+    render();
+  }
+  function setSort(mode) {
+    state.sort = mode;
+    syncSort();
+    if (mode === 'score') { $('#sortNote').textContent = ''; render(); return; }
+    if (state.origin) { useOrigin(state.origin, state.originLabel, $('#sortNote').textContent); return; }
+    const fallback = (why) => useOrigin(CAMPUS, CAMPUS.label, `${why} 학교 정문 기준으로 보여드려요.`);
+    if (!navigator.geolocation) { fallback('위치를 쓸 수 없는 환경이라'); return; }
+    $('#sortNote').textContent = '내 위치를 찾는 중이에요…';
+    let done = false;
+    const timer = setTimeout(() => { if (!done) { done = true; fallback('위치를 찾지 못해서'); } }, 9000);
+    try {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        if (done) return;
+        done = true; clearTimeout(timer);
+        const me = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+        if (distanceM(me, CAMPUS) > 15000) { fallback('지금 학교에서 멀리 있어서'); return; }
+        useOrigin(me, '내 위치', '내 위치 기준이에요.');
+      }, () => {
+        if (done) return;
+        done = true; clearTimeout(timer);
+        fallback('위치 권한이 없어서');
+      }, { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 });
+    } catch (err) {
+      done = true; clearTimeout(timer);
+      fallback('위치를 쓸 수 없는 환경이라');
+    }
+  }
 
   route();
 })();
