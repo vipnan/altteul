@@ -200,7 +200,6 @@ button { font: inherit; color: inherit; }
 .badge.liked { background: var(--accent-soft); color: var(--accent); border-color: transparent; }
 .badge.real { background: var(--accent-soft); color: var(--accent-deep, var(--accent)); border-color: transparent; }
 .badge.meals { color: var(--ink); }
-.r-qty { color: var(--accent); font-weight: 400; font-family: var(--font-display); }
 .kcal .per { font-size: 12px; color: var(--muted); margin-right: 4px; font-family: var(--font-body, inherit); }
 .badge.taste { background: var(--brand-navy); color: #fff; border-color: transparent; }
 .taste-line { font-size: 13.5px; color: var(--muted); line-height: 1.6; }
@@ -405,19 +404,6 @@ button { font: inherit; color: inherit; }
 }
 
 
-/* 인원 */
-.people { display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
-.people-label { font-size: 14px; color: var(--muted); margin-right: 2px; }
-.ppl { padding: 6px 13px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); font-family: var(--font-display); font-size: 15px; cursor: pointer; }
-.ppl:hover { border-color: var(--line-strong); }
-.ppl[aria-pressed="true"] { background: var(--brand-navy); border-color: var(--brand-navy); color: #fff; }
-.mini-search { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.mini-search .field-error { flex-basis: 100%; }
-.mini-search .search-pill { flex: 1 1 220px; min-width: 0; width: auto; }
-.mini-search .budget-input { min-width: 0; }
-.people-select { flex: none; }
-.people-select { padding: 8px 10px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; font-size: 14.5px; cursor: pointer; }
-
 /* 정렬 */
 .sort { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
 .sort-btn { display: inline-flex; align-items: center; gap: 5px; padding: 7px 14px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface); color: var(--muted); font-family: var(--font-display); font-size: 15px; cursor: pointer; }
@@ -568,22 +554,15 @@ button { font: inherit; color: inherit; }
         <span class="unit" aria-hidden="true">원</span>
       </div>
       <div class="chips" role="group" aria-label="자주 쓰는 금액">
-        <button type="button" class="chip" data-base="5000" data-amount="5000" aria-pressed="false">5,000원</button>
-        <button type="button" class="chip" data-base="7000" data-amount="7000" aria-pressed="false">7,000원</button>
-        <button type="button" class="chip" data-base="10000" data-amount="10000" aria-pressed="false">10,000원</button>
-        <button type="button" class="chip" data-base="15000" data-amount="15000" aria-pressed="false">15,000원</button>
-        <button type="button" class="chip" data-base="20000" data-amount="20000" data-open="1" aria-pressed="false">20,000원 이상</button>
-      </div>
-      <div class="people" role="group" aria-label="몇 명이서 먹어요?">
-        <span class="people-label">몇 명이서?</span>
-        <button type="button" class="ppl" data-people="1" aria-pressed="true">혼자</button>
-        <button type="button" class="ppl" data-people="2" aria-pressed="false">2명</button>
-        <button type="button" class="ppl" data-people="3" aria-pressed="false">3명</button>
-        <button type="button" class="ppl" data-people="4" aria-pressed="false">4명</button>
+        <button type="button" class="chip" data-amount="5000" aria-pressed="false">5,000원</button>
+        <button type="button" class="chip" data-amount="7000" aria-pressed="false">7,000원</button>
+        <button type="button" class="chip" data-amount="10000" aria-pressed="false">10,000원</button>
+        <button type="button" class="chip" data-amount="15000" aria-pressed="false">15,000원</button>
+        <button type="button" class="chip" data-amount="20000" data-open="1" aria-pressed="false">20,000원 이상</button>
       </div>
       <p class="home-hint" id="homeHint" aria-live="polite"></p>
       <p class="field-error" id="homeError" hidden></p>
-      <button type="submit" class="cta">한 끼 추천받기</button>
+      <button type="button" class="cta" id="homeGo">한 끼 추천받기</button>
     </form>
   </div>
   <p class="home-foot">배달은 실제 가게 · 편의점·음식점은 예시 데이터 · 팀 올펫로그</p>
@@ -601,12 +580,8 @@ button { font: inherit; color: inherit; }
       <div class="search-pill small">
         <input id="resultBudget" class="budget-input" type="text" inputmode="numeric" autocomplete="off" enterkeyhint="go" aria-describedby="resultError">
         <span class="unit" aria-hidden="true">원</span>
-        <button type="submit" class="mini-go">다시 추천</button>
+        <button type="button" class="mini-go" id="resultGo">다시 추천</button>
       </div>
-      <label class="sr-only" for="resultPeople">먹는 사람 수</label>
-      <select id="resultPeople" class="people-select">
-        <option value="1">혼자</option><option value="2">2명</option><option value="3">3명</option><option value="4">4명</option>
-      </select>
       <p class="field-error" id="resultError" hidden></p>
     </form>
   </header>
@@ -617,8 +592,7 @@ button { font: inherit; color: inherit; }
       <p id="rMood"></p>
       <p class="taste-line" id="tasteLine" aria-live="polite"></p>
       <div class="sort" id="sortBar" role="group" aria-label="정렬">
-        <button type="button" class="sort-btn" data-sort="score" aria-pressed="true">균형 점수 순</button>
-        <button type="button" class="sort-btn" data-sort="price" aria-pressed="false">예산에 가까운 순</button>
+        <button type="button" class="sort-btn" data-sort="score" aria-pressed="true">가게별 균형 좋은 순</button>
         <button type="button" class="sort-btn" data-sort="near" aria-pressed="false">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21c-4-5-7-8-7-12a7 7 0 0 1 14 0c0 4-3 7-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>가까운 순</button>
         <span class="sort-note" id="sortNote" aria-live="polite"></span>
@@ -1001,43 +975,7 @@ function trayOf(t) {
   };
 }
 
-/* 조합 하나 만들기. lines: [{ m: 메뉴, qty: 개수 }] · meals: 몇 끼(몇 인분)로 나눠 볼지 · people: 먹는 사람 수 */
-function makeCombo(store, lines, meals, people) {
-  const subtotal = lines.reduce((s, l) => s + l.m.price * l.qty, 0);
-  if (store.type === 'delivery' && subtotal < store.minOrder) return null;
-  const whole = { calories: 0, carbohydrate: 0, protein: 0, fat: 0, sodium: 0, veg: 0 };
-  for (const l of lines) {
-    for (const k of NUTRIENTS) whole[k] += l.m.nutrition[k] * l.qty;
-    whole.veg += l.m.veg * l.qty;
-  }
-  const t = { ...whole };
-  for (const k of NUTRIENTS) t[k] = whole[k] / meals;   // 한 사람(한 끼) 기준
-  t.veg = Math.min(Math.round(whole.veg / meals), 3);
-  whole.veg = Math.min(whole.veg, 3);
-  if (t.calories < 300 || t.calories > 1300) return null;  // 한 끼로 너무 적거나 많은 조합은 빼요
-  const fee = store.type === 'delivery' ? (store.fee || 0) : 0;
-  const sorted = lines.slice().sort((a, b) => roleRank(a.m) - roleRank(b.m) || b.m.price - a.m.price);
-  const items = sorted.map(l => l.m);
-  const qty = {};
-  for (const l of sorted) qty[l.m.id] = l.qty;
-  const tag = (l, key) => l.m[key] + (l.qty > 1 ? '×' + l.qty : '');
-  const { score, parts, share } = scoreOf(t);
-  return {
-    store, items, qty, subtotal, fee, price: subtotal + fee, people, meals,
-    totals: t, whole, score, parts, share, tray: trayOf(t),
-    sig: store.id + ':' + sorted.map(l => tag(l, 'id')).sort().join('+') + (people > 1 ? '@' + people : ''),
-    nameSig: sorted.map(l => tag(l, 'name')).sort().join('+'),
-    anchor: items[0].name,
-  };
-}
-const asLines = (pick) => {
-  const map = new Map();
-  for (const m of pick) map.set(m, (map.get(m) || 0) + 1);
-  return [...map].map(([m, qty]) => ({ m, qty }));
-};
-
-/* 혼자 먹을 때 */
-function buildSolo() {
+function buildCombos() {
   const list = [];
   for (const store of STORES) {
     if (store.off) continue;
@@ -1046,57 +984,31 @@ function buildSolo() {
     for (let k = 1; k <= maxK; k++) {
       for (const pick of combos(items, k)) {
         if (!allowed(store, pick)) continue;
+        const subtotal = pick.reduce((s, m) => s + m.price, 0);
+        if (store.type === 'delivery' && subtotal < store.minOrder) continue;
         // 실제 가게는 주메뉴 하나를 한 끼로 세요 (2인분 세트는 2끼). 최소주문 때문에 2끼 분량이 되면 한 끼 기준으로 나눠서 봐요
         const meals = store.real ? pick.filter(m => m.role === 'main').reduce((n, m) => n + (m.serves || 1), 0) : 1;
         if (meals > 2) continue;
-        const c = makeCombo(store, asLines(pick), meals, 1);
-        if (c) list.push(c);
+        const whole = totals(pick);
+        const t = meals > 1 ? perMeal(pick, meals) : whole;
+        if (t.calories < 300 || t.calories > 1300) continue;  // 한 끼로 너무 적거나 많은 조합은 빼요
+        const fee = store.type === 'delivery' ? (store.fee || 0) : 0;
+        const ordered = pick.slice().sort((a, b) => roleRank(a) - roleRank(b) || b.price - a.price);
+        const { score, parts, share } = scoreOf(t);
+        list.push({
+          store, items: ordered, subtotal, fee, price: subtotal + fee,
+          totals: t, whole, meals, score, parts, share, tray: trayOf(t),
+          sig: store.id + ':' + pick.map(m => m.id).sort().join('+'),
+          nameSig: ordered.map(m => m.name).sort().join('+'),
+          anchor: ordered[0].name,
+        });
       }
     }
   }
   return list;
 }
 
-/* 여러 명이 먹을 때
-   - 배달·음식점: 주메뉴를 사람 수만큼 (같은 메뉴 여러 개 가능, 2인분 세트는 2명 몫) + 추가 메뉴 0~1개
-   - 편의점: 각자 사는 거라 1인 조합 × 사람 수 */
-function buildGroup(n, solo) {
-  const list = [];
-  for (const store of STORES) {
-    if (store.off || store.type === 'cvs') continue;
-    const items = MENUS.filter(m => m.store === store.id);
-    const mains = items.filter(m => m.role === 'main'), sides = items.filter(m => m.role === 'side');
-    const mainSets = [];
-    (function rec(i, left, acc) {
-      if (left === 0) { mainSets.push(acc.slice()); return; }
-      for (let j = i; j < mains.length; j++) {
-        const sv = mains[j].serves || 1;
-        if (sv > left) continue;
-        acc.push(mains[j]); rec(j, left - sv, acc); acc.pop();
-      }
-    })(0, n, []);
-    const sideSets = [[], ...sides.map(x => [x])];
-    for (const ms of mainSets) for (const ss of sideSets) {
-      const c = makeCombo(store, asLines(ms.concat(ss)), n, n);
-      if (c) list.push(c);
-    }
-  }
-  for (const one of solo) {
-    if (one.store.type !== 'cvs') continue;
-    const c = makeCombo(one.store, one.items.map(m => ({ m, qty: n })), n, n);
-    if (c) { c.same = true; list.push(c); }
-  }
-  return list;
-}
-
-const MAX_PEOPLE = 4;
-const COMBO_CACHE = {};
-function combosFor(people = 1) {
-  const n = Math.min(Math.max(1, people | 0), MAX_PEOPLE);
-  if (!COMBO_CACHE[n]) COMBO_CACHE[n] = n === 1 ? buildSolo() : buildGroup(n, combosFor(1));
-  return COMBO_CACHE[n];
-}
-const COMBOS = combosFor(1);
+const COMBOS = buildCombos();
 
 /* 한 가게 조합만 줄줄이 나오지 않게 가게마다 최대 cap개만 골라요.
    round: '다시 추천'을 누를 때마다 1씩 올라가서, 같은 가게의 다음 순위 메뉴를 보여줘요 */
@@ -1153,21 +1065,6 @@ function pickNear(list, n, round = 0) {
     for (const arr of stores) if (arr[k] && out.length < n) out.push(arr[k]);
   }
   return out.sort((a, b) => near(a.dist, b.dist) || b.rank - a.rank);
-}
-
-/* 예산에 가까운 순: 예산을 알차게 쓰는 조합부터 (균형 점수 60점 이상만, 가게마다 최대 2개) */
-function pickClose(list, n, round, budget, open) {
-  const gap = (c) => (open ? Math.abs(c.price - budget) : budget - c.price);
-  const ok = list.filter(c => c.rank >= 60);
-  const src = ok.length >= n ? ok : list;
-  const groups = {};
-  for (const c of src) (groups[c.store.id] = groups[c.store.id] || []).push(c);
-  const pool = Object.values(groups).flatMap(arr => {
-    const top = arr.sort((a, b) => gap(a) - gap(b) || b.rank - a.rank).slice(0, 8);
-    if (top.length <= 2) return top;
-    return [0, 1].map(k => top[(round * 2 + k) % top.length]);
-  });
-  return pool.sort((a, b) => gap(a) - gap(b) || b.rank - a.rank).slice(0, n);
 }
 
 /* ───────── 취향 학습 ─────────
@@ -1241,14 +1138,11 @@ function tasteSummary(ratings = {}) {
 
 /* ratings: { [조합 sig]: 1(맛있었어요) | -1(별로였어요) }
    origin: { lat, lng } 를 주면 가까운 순으로 골라요 */
-/* opts: { people: 먹는 사람 수, sort: 'score' | 'near' | 'price', target: 예산(가까운 순 기준), open: '이상' 예산인지 } */
-function recommend(budget, ratings = {}, limit = 6, origin = null, round = 0, opts = {}) {
-  const { people = 1, sort = origin ? 'near' : 'score', target = budget, open = false } = opts;
-  const pool = combosFor(people);
+function recommend(budget, ratings = {}, limit = 6, origin = null, round = 0) {
   const model = learnTaste(ratings);
   const out = {};
   for (const cat of CATEGORIES) {
-    const all = pool.filter(c => c.store.type === cat);
+    const all = COMBOS.filter(c => c.store.type === cat);
     const minPrice = all.reduce((m, c) => Math.min(m, c.price), Infinity);
     const fit = all
       .filter(c => c.price <= budget)
@@ -1264,10 +1158,7 @@ function recommend(budget, ratings = {}, limit = 6, origin = null, round = 0, op
       seen.add(c.nameSig);
       unique.push(c);
     }
-    const list = sort === 'near' && origin ? pickNear(unique, limit, round)
-      : sort === 'price' ? pickClose(unique, limit, round, target, open)
-      : pickVaried(unique, limit, round);
-    out[cat] = { list, total: unique.length, minPrice };
+    out[cat] = { list: origin ? pickNear(unique, limit, round) : pickVaried(unique, limit, round), total: unique.length, minPrice };
   }
   return out;
 }
@@ -1316,11 +1207,9 @@ function moodOf(b) {
   const RATING_KEY = 'altteulmatteul.ratings.v1';
   const BUDGET_KEY = 'altteulmatteul.lastBudget.v1';
   const OPEN_KEY = 'altteulmatteul.openBudget.v1';
-  const OPEN_EXTRA = 100000;  // '○○원 이상'을 고르면 그 금액 + 10만원까지 다 보여줘요
-  const PEOPLE_KEY = 'altteulmatteul.people.v1';
+  const OPEN_CAP = 100000;  // '20,000원 이상'을 고르면 이 금액까지 다 보여줘요
   const isOpen = (input) => /이상/.test(input.value);
   const budgetText = () => won(state.budget) + (state.open ? ' 이상' : '');
-  const perHead = (b) => Math.round(b / state.people / 100) * 100;
   function load(key, fallback) {
     try {
       const raw = localStorage.getItem(key);
@@ -1333,7 +1222,7 @@ function moodOf(b) {
 
   let ratings = load(RATING_KEY, {});
   if (!ratings || typeof ratings !== 'object') ratings = {};
-  const state = { people: Math.min(Math.max(Number(load(PEOPLE_KEY, 1)) || 1, 1), 4), round: 0, open: false, budget: 0, active: 'cvs', expanded: { cvs: false, delivery: false, restaurant: false }, last: null, view: null, sort: 'score', origin: null, originLabel: '', pick: null };
+  const state = { round: 0, open: false, budget: 0, active: 'cvs', expanded: { cvs: false, delivery: false, restaurant: false }, last: null, view: null, sort: 'score', origin: null, originLabel: '', pick: null };
   const CAMPUS = { lat: 37.2772, lng: 127.9041, label: '학교 정문' };
 
   const ICON_UP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path fill="none" d="M7 10v11H4.5A1.5 1.5 0 0 1 3 19.5v-8A1.5 1.5 0 0 1 4.5 10H7z"/><path fill="none" d="M7 10l4.2-7.2A2.3 2.3 0 0 1 15.4 5l-.9 4.5h4.9a2 2 0 0 1 2 2.4l-1.4 7.2A2.3 2.3 0 0 1 17.7 21H7"/></svg>';
@@ -1379,7 +1268,7 @@ function moodOf(b) {
       { k: 'fat', label: '지방', grams: t.fat, pct: s.fat },
     ];
     return `<div class="nutri">
-      <div class="nutri-row"><span class="kcal">${c.people > 1 ? '<small class="per">1인분</small>' : c.meals > 1 ? '<small class="per">한 끼</small>' : ''}<b>${fmt(t.calories)}</b>kcal</span><span class="na">나트륨 ${fmt(t.sodium)}mg</span></div>
+      <div class="nutri-row"><span class="kcal">${c.meals > 1 ? '<small class="per">한 끼</small>' : ''}<b>${fmt(t.calories)}</b>kcal</span><span class="na">나트륨 ${fmt(t.sodium)}mg</span></div>
       <div class="macro-bar" aria-hidden="true">${rows.map(r => `<span class="m-${r.k}" style="flex: ${r.pct.toFixed(1)} 1 0"></span>`).join('')}</div>
       <dl class="macros">${rows.map(r => `<div style="--dot: var(--${r.k})"><dt>${r.label}</dt><dd>${g(r.grams)}g<small>${Math.round(r.pct)}%</small></dd></div>`).join('')}</dl>
     </div>`;
@@ -1407,20 +1296,17 @@ function moodOf(b) {
       `<span class="badge liked"${c.rating === 1 ? '' : ' hidden'}>내가 맛있다고 한 조합</span>`,
       c.taste >= 3 ? `<span class="badge taste">내 취향${c.tasteWhy.length ? ' · ' + c.tasteWhy.slice(0, 2).join(', ') : ''}</span>` : '',
       c.store.real ? '<span class="badge real">실제 메뉴·가격</span>' : '',
-      c.people > 1 ? `<span class="badge meals">${c.people}명 · 1인 약 ${won(perMealPrice)}</span>` : c.meals > 1 ? `<span class="badge meals">${c.meals}끼 분량 · 한 끼 약 ${won(perMealPrice)}</span>` : '',
-      c.same ? '<span class="badge">각자 같은 조합으로</span>' : '',
+      c.meals > 1 ? `<span class="badge meals">${c.meals}끼 분량 · 한 끼 약 ${won(perMealPrice)}</span>` : '',
       c.store.type === 'delivery' && !c.store.minOrder ? '<span class="badge">1인분 주문 가능</span>' : '',
       t.sodium >= SODIUM_DAY ? '<span class="badge warn">나트륨 하루치 넘음</span>' : t.sodium >= 1500 ? '<span class="badge warn">나트륨 많음</span>' : '',
     ].join('');
-    const q = (m) => (c.qty && c.qty[m.id]) || 1;
-    const rows = c.items.map(m => `<li><span class="r-name">${m.name}${q(m) > 1 ? ` <b class="r-qty">×${q(m)}</b>` : ''}</span><span class="r-dots"></span><span class="r-price">${won(m.price * q(m))}</span></li>`).join('')
+    const rows = c.items.map(m => `<li><span class="r-name">${m.name}</span><span class="r-dots"></span><span class="r-price">${won(m.price)}</span></li>`).join('')
       + (c.fee ? `<li class="r-fee"><span class="r-name">배달팁</span><span class="r-dots"></span><span class="r-price">${won(c.fee)}</span></li>` : '')
       + (c.store.feeUnknown ? '<li class="r-fee"><span class="r-name">배달팁</span><span class="r-dots"></span><span class="r-price">앱에서 확인</span></li>' : '');
     const facts = c.items.map(m => {
-      const k = q(m), n = {};
-      for (const key in m.nutrition) n[key] = m.nutrition[key] * k;
+      const n = m.nutrition;
       const note = m.db && m.db.includes(' · ') ? ' · ' + m.db.split(' · ').slice(1).join(' · ') : '';
-      return `<tr><td>${m.name}${k > 1 ? ' ×' + k : ''}${m.src === 'sample' ? '*' : ''}<small>${m.serving} · ${SRC_LABEL[m.src]}${note}</small></td><td>${fmt(n.calories)}</td><td>${g(n.carbohydrate)}</td><td>${g(n.protein)}</td><td>${g(n.fat)}</td><td>${fmt(n.sodium)}</td></tr>`;
+      return `<tr><td>${m.name}${m.src === 'sample' ? '*' : ''}<small>${m.serving} · ${SRC_LABEL[m.src]}${note}</small></td><td>${fmt(n.calories)}</td><td>${g(n.carbohydrate)}</td><td>${g(n.protein)}</td><td>${g(n.fat)}</td><td>${fmt(n.sodium)}</td></tr>`;
     }).join('');
     return `<article class="card" data-sig="${c.sig}">
       <div class="card-top">
@@ -1434,7 +1320,7 @@ function moodOf(b) {
       ${trayHTML(c.tray)}
       <ul class="receipt">${rows}</ul>
       <div class="total"><span class="total-sum">합계<b>${won(c.price)}</b></span>${state.open ? '' : `<span class="left-tag">${left > 0 ? `${won(left)} 남아요` : '예산에 딱 맞아요'}</span>`}</div>
-      <p class="nutri-line"><span class="nl-k">${c.people > 1 ? '1인분 ' : c.meals > 1 ? '한 끼 ' : ''}약 <b>${fmt(Math.round(t.calories / 10) * 10)}</b>kcal</span><span class="nl-na">나트륨 약 ${fmt(Math.round(t.sodium / 10) * 10)}mg</span></p>
+      <p class="nutri-line"><span class="nl-k">${c.meals > 1 ? '한 끼 ' : ''}약 <b>${fmt(Math.round(t.calories / 10) * 10)}</b>kcal</span><span class="nl-na">나트륨 약 ${fmt(Math.round(t.sodium / 10) * 10)}mg</span></p>
       <p class="reason"><span>추천 이유</span>${reasonOf(c, state.open ? c.price : budget)}</p>
       <details class="facts">
         <summary>영양 성분 자세히 <small>추정값</small></summary>
@@ -1443,7 +1329,7 @@ function moodOf(b) {
           <table>
             <thead><tr><th scope="col">메뉴</th><th scope="col">kcal</th><th scope="col">탄수화물 g</th><th scope="col">단백질 g</th><th scope="col">지방 g</th><th scope="col">나트륨 mg</th></tr></thead>
             <tbody>${facts}</tbody>
-            <tfoot><tr><td>합계</td><td>${fmt(w.calories)}</td><td>${g(w.carbohydrate)}</td><td>${g(w.protein)}</td><td>${g(w.fat)}</td><td>${fmt(w.sodium)}</td></tr>${c.meals > 1 ? `<tr><td>${c.people > 1 ? '1인분' : '한 끼'} (÷${c.meals})</td><td>${fmt(t.calories)}</td><td>${g(t.carbohydrate)}</td><td>${g(t.protein)}</td><td>${g(t.fat)}</td><td>${fmt(t.sodium)}</td></tr>` : ''}</tfoot>
+            <tfoot><tr><td>합계</td><td>${fmt(w.calories)}</td><td>${g(w.carbohydrate)}</td><td>${g(w.protein)}</td><td>${g(w.fat)}</td><td>${fmt(w.sodium)}</td></tr>${c.meals > 1 ? `<tr><td>한 끼 (÷${c.meals})</td><td>${fmt(t.calories)}</td><td>${g(t.carbohydrate)}</td><td>${g(t.protein)}</td><td>${g(t.fat)}</td><td>${fmt(t.sodium)}</td></tr>` : ''}</tfoot>
           </table>
         </div>
         <p class="src">식약처 식품영양성분DB(음식)의 같은·비슷한 음식 값을 먹는 양에 맞춰 계산한 추정값이에요. 실제 음식과 다를 수 있어요.${c.items.some(m => m.src === 'sample') ? ' *는 DB에 없어 예시값이에요.' : ''}</p>
@@ -1489,8 +1375,8 @@ function moodOf(b) {
     const col = $('#col-' + cat);
     const cards = col.querySelector('.cards');
     const more = col.querySelector('.more');
-    $('#tab-' + cat + ' .count').textContent = r.total > 999 ? '999+' : fmt(r.total);
-    col.querySelector('.col-meta').textContent = r.total ? `조합 ${fmt(r.total)}개 중 ${SORT_META[state.sort]}` : '추천 없음';
+    $('#tab-' + cat + ' .count').textContent = fmt(r.total);
+    col.querySelector('.col-meta').textContent = r.total ? `조합 ${fmt(r.total)}개 중 ${state.sort === 'near' ? '가까운 순' : '가게별 균형 좋은 순'}` : '추천 없음';
     if (!r.list.length) {
       cards.innerHTML = emptyHTML(cat, r);
       more.hidden = true;
@@ -1505,14 +1391,10 @@ function moodOf(b) {
     more.setAttribute('aria-expanded', String(state.expanded[cat]));
   }
 
-  const SORT_TEXT = { score: '영양 균형 점수가 높은 순서예요.', near: '가까운 가게부터 보여드려요.', price: '예산을 알차게 쓰는 조합부터 보여드려요.' };
-  const SORT_META = { score: '균형 점수 순', near: '가까운 순', price: '예산에 가까운 순' };
   function render() {
-    state.last = recommend(state.open ? state.budget + OPEN_EXTRA : state.budget, ratings, 6, state.sort === 'near' ? state.origin : null, state.round,
-      { people: state.people, sort: state.sort, target: state.budget, open: state.open });
+    state.last = recommend(state.open ? OPEN_CAP : state.budget, ratings, 6, state.sort === 'near' ? state.origin : null, state.round);
     $('#rBudget').textContent = budgetText();
-    const who = state.people > 1 ? `${state.people}명이서 1인 약 ${won(perHead(state.budget))}${state.open ? ' 이상' : ''}. ` : '';
-    $('#rMood').textContent = `${who}${moodOf(state.budget / state.people)} ${!state.pick ? '편의점, 배달음식, 음식점 중에 골라보세요.' : SORT_TEXT[state.sort]}`;
+    $('#rMood').textContent = `${moodOf(state.budget)} ${!state.pick ? '편의점, 배달음식, 음식점 중에 골라보세요.' : state.sort === 'near' ? '가까운 가게부터 보여드려요.' : '영양 균형 점수가 높은 순서예요.'}`;
     CATEGORIES.forEach(renderColumn);
     CATEGORIES.forEach(cat => {
       const r = state.last[cat];
@@ -1526,7 +1408,7 @@ function moodOf(b) {
     syncPick();
     renderTaste();
     const l = state.last;
-    $('#live').textContent = `${state.people > 1 ? state.people + '명이서 ' : ''}오늘의 식비 ${budgetText()}으로 편의점 ${l.cvs.total}개, 배달음식 ${l.delivery.total}개, 음식점 ${l.restaurant.total}개 조합을 찾았어요.`;
+    $('#live').textContent = `오늘의 식비 ${budgetText()}으로 편의점 ${l.cvs.total}개, 배달음식 ${l.delivery.total}개, 음식점 ${l.restaurant.total}개 조합을 찾았어요.`;
     syncReset();
   }
 
@@ -1562,7 +1444,7 @@ function moodOf(b) {
     };
     if (!b) return fail('얼마인지 숫자로 알려주세요.');
     if (b < 1000) return fail('1,000원부터 추천할 수 있어요.');
-    if (b > 500000) return fail('500,000원까지만 입력할 수 있어요.');
+    if (b > 100000) return fail('100,000원까지만 입력할 수 있어요.');
     errorEl.hidden = true;
     input.removeAttribute('aria-invalid');
     return b;
@@ -1582,28 +1464,7 @@ function moodOf(b) {
     const open = isOpen(homeInput);
     $$('.chip').forEach(ch => ch.setAttribute('aria-pressed', String(Number(ch.dataset.amount) === v && !!ch.dataset.open === open)));
   }
-  const updateHint = (b) => {
-    homeHint.textContent = b >= 1000 ? (state.people > 1 ? `1인 약 ${won(perHead(b))} · ` : '') + moodOf(b / state.people) : '';
-    syncChips();
-  };
-  /* 인원: 금액 추천칸은 '1인 금액 × 인원'으로 바뀌어요 (입력한 식비는 다 같이 쓸 총액) */
-  function setPeople(n, rerender) {
-    state.people = n;
-    save(PEOPLE_KEY, n);
-    $$('.ppl').forEach(b => b.setAttribute('aria-pressed', String(Number(b.dataset.people) === n)));
-    $('#resultPeople').value = String(n);
-    $$('.chip').forEach(ch => {
-      const amt = Number(ch.dataset.base) * n;
-      ch.dataset.amount = String(amt);
-      ch.textContent = fmt(amt) + '원' + (ch.dataset.open ? ' 이상' : '');
-    });
-    updateHint(Number(homeInput.value.replace(/\D/g, '')));
-    if (rerender && state.budget) {
-      state.round = 0;
-      state.expanded = { cvs: false, delivery: false, restaurant: false };
-      render();
-    }
-  }
+  const updateHint = (b) => { homeHint.textContent = b >= 1000 ? moodOf(b) : ''; syncChips(); };
   formatWhileTyping(homeInput, homeError, updateHint);
   formatWhileTyping(resultInput, resultError);
 
@@ -1620,8 +1481,6 @@ function moodOf(b) {
   }
 
   if (/^https:\/\//.test(FEEDBACK_URL)) { const fb = $('#feedbackLink'); fb.href = FEEDBACK_URL; fb.hidden = false; }
-  $('#resultPeople').addEventListener('change', (e) => setPeople(Number(e.target.value), true));
-  setPeople(state.people, false);
 
   /* 화면 전환: #home(첫 화면) · #result(추천 결과) */
   const homeView = $('#home'), resultView = $('#result');
@@ -1662,19 +1521,33 @@ function moodOf(b) {
   }
   window.addEventListener('hashchange', route);
 
-  homeForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+  /* 버튼·엔터를 직접 처리해요. (클로드 앱 미리보기처럼 form 제출이 막힌 환경에서도 눌리게)
+     같은 동작이 두 번 들어오면 한 번만 실행해요 */
+  function bindGo(form, input, button, run) {
+    let last = 0;
+    const go = (e) => {
+      if (e) e.preventDefault();
+      const now = Date.now();
+      if (now - last < 400) return;
+      last = now;
+      run();
+    };
+    button.addEventListener('click', go);
+    input.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.isComposing) go(e); });
+    form.addEventListener('submit', go);
+  }
+
+  bindGo(homeForm, homeInput, $('#homeGo'), () => {
     const open = isOpen(homeInput);
     const b = readBudget(homeInput, homeError);
     if (!b) { homeHint.textContent = ''; return; }
     state.pick = null;
     setBudget(b, open);
-    if (location.hash !== '#result') location.hash = 'result';
+    try { if (location.hash !== '#result') location.hash = 'result'; } catch (err) { /* 주소를 못 바꾸는 환경 */ }
     show('result');
   });
 
-  resultForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+  bindGo(resultForm, resultInput, $('#resultGo'), () => {
     const open = isOpen(resultInput);
     const b = readBudget(resultInput, resultError);
     if (!b) return;
@@ -1691,7 +1564,7 @@ function moodOf(b) {
   });
 
   $('#goHome').addEventListener('click', () => {
-    if (location.hash !== '#home') location.hash = 'home';
+    try { if (location.hash !== '#home') location.hash = 'home'; } catch (err) { /* 주소를 못 바꾸는 환경 */ }
     show('home');
   });
 
@@ -1779,8 +1652,6 @@ function moodOf(b) {
       if (!state.expanded[cat]) $('#col-' + cat).scrollIntoView({ block: 'nearest' });
       return;
     }
-    const ppl = e.target.closest('[data-people]');
-    if (ppl) { setPeople(Number(ppl.dataset.people), false); return; }
     const chip = e.target.closest('[data-amount]');
     if (chip) {
       const amount = Number(chip.dataset.amount);
@@ -1815,7 +1686,7 @@ function moodOf(b) {
   function setSort(mode) {
     state.sort = mode;
     syncSort();
-    if (mode !== 'near') { $('#sortNote').textContent = ''; render(); return; }
+    if (mode === 'score') { $('#sortNote').textContent = ''; render(); return; }
     if (state.origin) { useOrigin(state.origin, state.originLabel, $('#sortNote').textContent); return; }
     const fallback = (why) => useOrigin(CAMPUS, CAMPUS.label, `${why} 학교 정문 기준으로 보여드려요.`);
     if (!navigator.geolocation) { fallback('위치를 쓸 수 없는 환경이라'); return; }
